@@ -1,0 +1,22 @@
+BlogBundle\Entity\Role:
+    type: entity
+    table: null
+    repositoryClass: BlogBundle\Repository\RoleRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        role:
+            type: string
+            length: '30'
+            unique: true
+
+    manyToMany:
+        users:
+            target: User
+            mappedBy: roles
+
+    lifecycleCallbacks: {  }

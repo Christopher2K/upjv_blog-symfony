@@ -1,0 +1,41 @@
+BlogBundle\Entity\User:
+    type: entity
+    table: null
+    repositoryClass: BlogBundle\Repository\UserRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        username:
+            type: string
+            length: 255
+            unique: true
+        password:
+            type: string
+            length: 255
+
+    manyToMany:
+        roles:
+            targetEntity: Role
+            inversedBy: users
+
+        readArticles:
+            targetEntity: BlogBundle\Entity\Article
+            inversedBy: readBy
+
+    oneToMany:
+        writenArticles:
+            targetEntity: BlogBundle\Entity\Article
+            mappedBy: author
+
+        themes:
+            targetEntity: BlogBundle\Entity\UserTheme
+            inversedBy: user
+
+
+
+
+    lifecycleCallbacks: {  }

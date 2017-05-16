@@ -1,0 +1,21 @@
+BlogBundle\Entity\Theme:
+    type: entity
+    table: null
+    repositoryClass: BlogBundle\Repository\ThemeRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        title:
+            type: string
+            length: 255
+
+    manyToMany:
+        articles:
+            targetEntity: BlogBundle\Entity\Article
+            mappedBy: themes
+
+    lifecycleCallbacks: {  }

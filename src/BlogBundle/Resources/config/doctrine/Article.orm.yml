@@ -1,0 +1,44 @@
+BlogBundle\Entity\Article:
+    type: entity
+    table: null
+    repositoryClass: BlogBundle\Repository\ArticleRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        title:
+            type: string
+            length: 255
+        content:
+            type: text
+        createdAt:
+            type: datetime
+            column: created_at
+        updatedAt:
+            type: datetime
+            column: updated_at
+
+    manyToMany:
+        readBy:
+            targetEntity: BlogBundle\Entity\User
+            mappedBy: readArticles
+
+        themes:
+            targetEntity: BlogBundle\Entity\Theme
+            inversedBy: articles
+
+    manyToOne:
+        author:
+            targetEntity: BlogBundle\Entity\User
+            inversedBy: writenArticles
+
+    oneToMany:
+        comments:
+            targetEntity: BlogBundle\Entity\Comment
+            inversedBy: article
+
+
+    lifecycleCallbacks: {  }

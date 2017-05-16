@@ -1,0 +1,18 @@
+BlogBundle\Entity\ReportingArticle:
+    type: entity
+    table: null
+    repositoryClass: BlogBundle\Repository\ReportingArticleRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+
+    manyToOne:
+        user:
+            targetEntity: BlogBundle\Entity\User
+        article:
+            targetEntity: BlogBundle\Entity\Article
+
+    lifecycleCallbacks: {  }

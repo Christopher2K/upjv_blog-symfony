@@ -1,0 +1,23 @@
+BlogBundle\Entity\UserTheme:
+    type: entity
+    table: null
+    repositoryClass: BlogBundle\Repository\UserThemeRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        isReviewer:
+            type: boolean
+            column: is_reviewer
+
+    manyToOne:
+        user:
+            targetEntity: BlogBundle\Entity\User
+            mappedBy: themes
+        theme:
+            targetEntity: BlogBundle\Entity\Theme
+
+    lifecycleCallbacks: {  }

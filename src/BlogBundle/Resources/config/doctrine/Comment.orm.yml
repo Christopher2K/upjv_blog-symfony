@@ -1,0 +1,25 @@
+BlogBundle\Entity\Comment:
+    type: entity
+    table: null
+    repositoryClass: BlogBundle\Repository\CommentRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        content:
+            type: text
+        note:
+            type: smallint
+
+    manyToOne:
+        author:
+            targetEntity: BlogBundle\Entity\User
+
+        article:
+            targetEntity: BlogBundle\Entity\Article
+            mappedBy: comments
+
+    lifecycleCallbacks: {  }
