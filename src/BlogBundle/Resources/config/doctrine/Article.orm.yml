@@ -38,7 +38,7 @@ BlogBundle\Entity\Article:
     oneToMany:
         comments:
             targetEntity: BlogBundle\Entity\Comment
-            inversedBy: article
+            mappedBy: article
 
 
     lifecycleCallbacks: {  }

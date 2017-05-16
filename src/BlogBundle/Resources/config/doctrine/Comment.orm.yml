@@ -20,6 +20,6 @@ BlogBundle\Entity\Comment:
 
         article:
             targetEntity: BlogBundle\Entity\Article
-            mappedBy: comments
+            inversedBy: comments
 
     lifecycleCallbacks: {  }

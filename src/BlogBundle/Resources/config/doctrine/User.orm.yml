@@ -19,7 +19,7 @@ BlogBundle\Entity\User:
 
     manyToMany:
         roles:
-            targetEntity: Role
+            targetEntity: BlogBundle\Entity\Role
             inversedBy: users
 
         readArticles:
