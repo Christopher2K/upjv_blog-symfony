@@ -80,5 +80,62 @@ class Comment
     {
         return $this->note;
     }
-}
+    /**
+     * @var \BlogBundle\Entity\User
+     */
+    private $author;
 
+    /**
+     * @var \BlogBundle\Entity\Article
+     */
+    private $article;
+
+
+    /**
+     * Set author
+     *
+     * @param \BlogBundle\Entity\User $author
+     *
+     * @return Comment
+     */
+    public function setAuthor(\BlogBundle\Entity\User $author = null)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return \BlogBundle\Entity\User
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * Set article
+     *
+     * @param \BlogBundle\Entity\Article $article
+     *
+     * @return Comment
+     */
+    public function setArticle(\BlogBundle\Entity\Article $article = null)
+    {
+        $this->article = $article;
+
+        return $this;
+    }
+
+    /**
+     * Get article
+     *
+     * @return \BlogBundle\Entity\Article
+     */
+    public function getArticle()
+    {
+        return $this->article;
+    }
+}

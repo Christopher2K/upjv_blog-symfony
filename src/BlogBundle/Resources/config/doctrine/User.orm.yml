@@ -33,7 +33,7 @@ BlogBundle\Entity\User:
 
         themes:
             targetEntity: BlogBundle\Entity\UserTheme
-            inversedBy: user
+            mappedBy: user
 
 
 

@@ -138,5 +138,159 @@ class Article
     {
         return $this->updatedAt;
     }
-}
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $comments;
 
+    /**
+     * @var \BlogBundle\Entity\User
+     */
+    private $author;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $readBy;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $themes;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->readBy = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->themes = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add comment
+     *
+     * @param \BlogBundle\Entity\Comment $comment
+     *
+     * @return Article
+     */
+    public function addComment(\BlogBundle\Entity\Comment $comment)
+    {
+        $this->comments[] = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Remove comment
+     *
+     * @param \BlogBundle\Entity\Comment $comment
+     */
+    public function removeComment(\BlogBundle\Entity\Comment $comment)
+    {
+        $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * Set author
+     *
+     * @param \BlogBundle\Entity\User $author
+     *
+     * @return Article
+     */
+    public function setAuthor(\BlogBundle\Entity\User $author = null)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return \BlogBundle\Entity\User
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * Add readBy
+     *
+     * @param \BlogBundle\Entity\User $readBy
+     *
+     * @return Article
+     */
+    public function addReadBy(\BlogBundle\Entity\User $readBy)
+    {
+        $this->readBy[] = $readBy;
+
+        return $this;
+    }
+
+    /**
+     * Remove readBy
+     *
+     * @param \BlogBundle\Entity\User $readBy
+     */
+    public function removeReadBy(\BlogBundle\Entity\User $readBy)
+    {
+        $this->readBy->removeElement($readBy);
+    }
+
+    /**
+     * Get readBy
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReadBy()
+    {
+        return $this->readBy;
+    }
+
+    /**
+     * Add theme
+     *
+     * @param \BlogBundle\Entity\Theme $theme
+     *
+     * @return Article
+     */
+    public function addTheme(\BlogBundle\Entity\Theme $theme)
+    {
+        $this->themes[] = $theme;
+
+        return $this;
+    }
+
+    /**
+     * Remove theme
+     *
+     * @param \BlogBundle\Entity\Theme $theme
+     */
+    public function removeTheme(\BlogBundle\Entity\Theme $theme)
+    {
+        $this->themes->removeElement($theme);
+    }
+
+    /**
+     * Get themes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getThemes()
+    {
+        return $this->themes;
+    }
+}

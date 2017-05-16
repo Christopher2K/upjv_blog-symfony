@@ -16,7 +16,7 @@ BlogBundle\Entity\Role:
 
     manyToMany:
         users:
-            target: User
+            targetEntity: BlogBundle\Entity\User
             mappedBy: roles
 
     lifecycleCallbacks: {  }

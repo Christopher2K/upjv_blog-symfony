@@ -16,7 +16,7 @@ BlogBundle\Entity\UserTheme:
     manyToOne:
         user:
             targetEntity: BlogBundle\Entity\User
-            mappedBy: themes
+            inversedBy: themes
         theme:
             targetEntity: BlogBundle\Entity\Theme
 
