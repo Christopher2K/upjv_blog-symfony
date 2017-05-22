@@ -138,6 +138,7 @@ class Article
     {
         return $this->updatedAt;
     }
+
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
@@ -292,5 +293,25 @@ class Article
     public function getThemes()
     {
         return $this->themes;
+    }
+
+    /**
+     * Set an initial value at the article creation
+     *
+     * @return void
+     */
+    public function setCreatedAtInitialValue()
+    {
+        $this->createdAt = new \DateTime('now');
+    }
+
+    /**
+     * Set an initial value at each persistence of this article
+     *
+     * @return void
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTime('now');
     }
 }

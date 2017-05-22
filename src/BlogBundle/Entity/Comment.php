@@ -138,4 +138,13 @@ class Comment
     {
         return $this->article;
     }
+
+    /**
+     * Set an initial value at the article creation
+     *
+     * @return void
+     */
+    public function setCreatedAtInitialValue() {
+        $this->createdAt = new \DateTime('now');
+    }
 }

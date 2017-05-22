@@ -22,4 +22,5 @@ BlogBundle\Entity\Comment:
             targetEntity: BlogBundle\Entity\Article
             inversedBy: comments
 
-    lifecycleCallbacks: {  }
+    lifecycleCallbacks:
+        prePersist: [setCreatedAtInitialValue]

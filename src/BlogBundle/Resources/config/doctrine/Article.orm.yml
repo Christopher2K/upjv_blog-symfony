@@ -40,5 +40,6 @@ BlogBundle\Entity\Article:
             targetEntity: BlogBundle\Entity\Comment
             mappedBy: article
 
-
-    lifecycleCallbacks: {  }
+    lifecycleCallbacks:
+        prePersist: [setCreatedAtInitialValue, setUpdatedAtValue]
+        preFlush: [setUpdatedAtValue]
