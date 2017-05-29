@@ -1,0 +1,44 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>Connexion</h1>
+            </div>
+            <div class="col-xs-12">
+                <p>Cette page permet de se connecter afin d'accéder à son espace personnel et aux articles.</p>
+            </div>
+        </div>
+
+        {% if error %}
+            <div class="alert alert-danger">
+                <strong>Erreur !</strong> Nom d'utilisateur ou mot de passe incorrect.
+            </div>
+        {% endif %}
+
+        <div class="row">
+            <form class="col-md-offset-2 col-md-8 col-xs-12"
+                  action="{{ path('login_check') }}"
+                  method="post">
+                <div class="form-group">
+                    <label for="username">Nom d'utilisateur</label>
+                    <input class="form-control"
+                           name="_username" id="username" type="text" value="{{ last_username }}"
+                           required="required"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input class="form-control"
+                           name="_password" id="password" type="password"
+                           required="required"/>
+                </div>
+
+                <button type="submit" class="btn btn-default">Connexion</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
