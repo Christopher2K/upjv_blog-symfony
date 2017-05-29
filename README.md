@@ -1,9 +1,3 @@
-Je développe de la merde 
+# Projet Symfony Blog
 
-MON KEUR DANSE LA MAKARENA
-
-Macron did nothing wrong
-
-sdfksdfksdmlfksdmlf
-
-Ce-ci est un test pour savoir si j'ai tout bien fait.
+Ce projet est réalisé dans le cadre de l'UE Architecture Web des Systèmes d'Informations à l'UPJV
