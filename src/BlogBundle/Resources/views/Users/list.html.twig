@@ -7,12 +7,13 @@
         <div class="row">
             <h1>Utilisateurs</h1>
             <p>La liste des utilisateurs du blog !</p>
+            <a href="{{ path('admin_user_ajouter')}}">Ajouter un utilisateur</a>
         </div>
         <div class="row">
             <ul>
             {% for user in users %}
                 <div class="col-md-12 col-xs-12">
-                 <li>   <a href="">{{ user.username }}</a>
+                 <li>   <a href="{{ path('admin_user_edit', { 'id': user.id }) }}">{{ user.username }}</a>
                  {% for oneRole in user.getRoles %}
                      - {{ oneRole.getRole }}
                  {% endfor %}
