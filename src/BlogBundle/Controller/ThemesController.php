@@ -2,6 +2,8 @@
 
 namespace BlogBundle\Controller;
 
+use BlogBundle\Entity\Theme;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -13,12 +15,14 @@ class ThemesController extends Controller
     public function chooseThemeAction(Request $request)
     {
         {
-            // create a task and give it some dummy data for this example
             $theme = new Theme();
-            $theme->settitle('Toast');
-
             $form = $this->createFormBuilder($theme)
-                ->add('task', TextType::class)
+                ->add('title', EntityType::class, array(
+                        'class' => 'BlogBundle:Theme',
+                        'choice_label' => 'title',
+                        'multiple' => true,
+                        'expanded' => true,
+                ))
                 ->add('save', SubmitType::class, array('label' => 'Create Post'))
                 ->getForm();
 
