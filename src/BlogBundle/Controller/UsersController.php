@@ -6,8 +6,10 @@ use BlogBundle\Entity\User;
 use BlogBundle\Form\UserType;
 use Doctrine\Common\Annotations\Annotation\Required;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class UsersController extends Controller
 {
@@ -38,6 +40,7 @@ class UsersController extends Controller
         $form = $this->createForm(UserType::class,$user,array('action'=>$this->generateUrl('admin_user_edit_suite',
             array('id'=>$user->getId()))));
         $form->remove('username');
+        //$form->add('roles',CheckboxType::class,$user.getRoles());
         $form->add('submit',SubmitType::class,array('label'=>'Modifier'));
         return $this->render('BlogBundle:Users:modifier.html.twig',array('monFormulaire'=>$form->createView(),'user'=>$user));
     }
