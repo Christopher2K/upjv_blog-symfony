@@ -29,10 +29,22 @@ user_list:
 admin_user_edit:
   path: /admin/users/{id}
   defaults: { _controller: BlogBundle:Users:edit }
+  requirements:
+    id: \d{1,2}
 
 admin_user_edit_suite:
   path: /admin/usersSuite/{id}
-  defaults: { _controller: BlogBundle:Users:edit }
+  defaults: { _controller: BlogBundle:Users:editSuite }
+  requirements:
+    _method: POST
+
+admin_user_ajouter:
+  path: /admin/users/new
+  defaults: { _controller: BlogBundle:Users:ajouter }
+
+admin_user_delete:
+  path: /admin/users/delete/{id}
+  defaults: { _controller: BlogBundle:Users:delete }
 
 choose_theme:
     path:     /chooseTheme
