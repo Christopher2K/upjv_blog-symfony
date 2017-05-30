@@ -1,16 +1,5 @@
 {% extends "::base.html.twig" %}
-
-{% block title %}BlogBundle:Themes:chooseTheme{% endblock %}
-
-{% block body %}
-<h1>Selectionner les themes que vous lisez :</h1>
-
-   <br>
-
-    {% for theme in theme %}
-               <div><input type="checkbox" id="{{ theme.id }} value="{{ theme.id }}"> {{ theme.title }}</div>
-        {% endfor %}
-    <br>
-
-
+{{ form_start(form) }}
+{{ form_widget(form) }}
+{{ form_end(form) }}
 {% endblock %}
