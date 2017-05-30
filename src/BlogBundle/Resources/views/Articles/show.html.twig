@@ -3,8 +3,59 @@
 {% block body %}
     <div class="container">
         <div class="row">
-            <h1>{{ article.title }}</h1>
-            <h2>{{ article.content }}</h2>
+            <h1 class="col-xs-12">{{ article.title }}</h1>
+            <div class="col-xs-12 col-md-8 col-md-offset-2">
+                {{ article.content }}
+                {{ article.content }}
+            </div>
+        </div>
+
+        <div class="row">
+            <h2 class="col-xs-12">Commentaires</h2>
+
+            {% if is_granted('ROLE_REVIEWER') %}
+                <h3 class="col-xs-12">Poster un commentaire</h3>
+                {{ form_start(form_comment, {'attr': {'class': 'col-xs-12'}}) }}
+
+
+                <div class="form-group">
+                    {{ form_label(form_comment.note, 'Note') }}
+                    {% if form_errors(form_comment.note) %}
+                        <div class="alert alert-danger">
+                            <strong>Erreur !</strong> {{ form_errors(form_comment.note) }}
+                        </div>
+                    {% endif %}
+                    {{ form_widget(form_comment.note, {'attr': {'class': 'form-control', 'min': 0, 'max': 10}}) }}
+                </div>
+
+
+                <div class="form-group">
+                    {{ form_label(form_comment.content, 'Contenu du commentaire') }}
+                    {% if form_errors(form_comment.content) %}
+                        <div class="alert alert-danger">
+                            <strong>Erreur !</strong> {{ form_errors(form_comment.content) }}
+                        </div>
+                    {% endif %}
+                    {{ form_widget(form_comment.content, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+                </div>
+
+                {{ form_row(form_comment.submit, {'label': 'Soumettre', 'attr' : {'class' : 'btn btn-default'}}) }}
+                {{ form_end(form_comment) }}
+            {% endif %}
+
+            <h3 class="col-xs-12">Précédentes réactions...</h3>
+            {% for comment in comments %}
+                <div class="col-xs-12 col-md-10 col-md-offset-1">
+                    <div class="col-md-4">
+                        <strong>{{ comment.author }}</strong><br/>
+                        <em>Note: {{ comment.note }} / 10</em>
+                        <p>{{ comment.content }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+            {% if comments | length == 0 %}
+                <p>Pas de commentaires sous cet article !</p>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

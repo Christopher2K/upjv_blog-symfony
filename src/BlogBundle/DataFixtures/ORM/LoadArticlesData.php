@@ -92,6 +92,10 @@ class LoadArticlesData extends AbstractFixture implements OrderedFixtureInterfac
         $article3->addTheme($t5);
         $article3->addTheme($t6);
 
+        $this->addReference('article1', $article1);
+        $this->addReference('article2', $article2);
+        $this->addReference('article3', $article3);
+
         $manager->flush();
     }
 

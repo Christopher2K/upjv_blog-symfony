@@ -2,12 +2,14 @@
 
 namespace BlogBundle\Controller;
 
+use BlogBundle\Entity\Comment;
+use BlogBundle\Form\CommentType;
 use BlogBundle\Entity\Article;
 use BlogBundle\Form\ArticleType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\HttpFoundation\Request;
 
 class ArticlesController extends Controller
 {
@@ -26,19 +28,51 @@ class ArticlesController extends Controller
         ]);
     }
 
-    public function showAction($id)
+    /**
+     * Display an articles and his comments
+     *
+     * @param $id - ID of the article
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showAction(Request $request, $id)
     {
+        // Datas
         $articleRepository = $this->getDoctrine()->getRepository('BlogBundle:Article');
         $commentRepository = $this->getDoctrine()->getRepository('BlogBundle:Comment');
 
         $article = $articleRepository->find($id);
         $comments = $commentRepository->findBy([
-            'article' => $article
+            'article' => $article->getId()
         ]);
+
+
+        // Form comment
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
+        $newComment = new Comment();
+        $newComment->setArticle($article)
+            ->setAuthor($user)
+            ->setNote(0);
+
+        $formComment = $this->createForm(CommentType::class, $newComment, [
+            'action' => $this->generateUrl('article_show', ['id' => $id])
+        ]);
+
+        $formComment->handleRequest($request);
+        if ($formComment->isSubmitted() && $formComment->isValid()) {
+            $newComment = $formComment->getData();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($newComment);
+            $em->flush();
+
+            return $this->redirectToRoute('article_show', ['id' => $id]);
+        }
+
 
         return $this->render('BlogBundle:Articles:show.html.twig', [
             'article' => $article,
-            'comments' => $comments
+            'comments' => $comments,
+            'form_comment' => $formComment->createView()
         ]);
     }
 

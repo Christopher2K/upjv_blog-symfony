@@ -1,2 +1,10 @@
+BlogBundle\Entity\Comment:
+    properties:
+        content:
+            - Length:
+                min: 10
+                max: 2000
+                exactMessage: Entre 10 et 2000 caractères.
+
 BlogBundle\Entity\Article:
   properties:

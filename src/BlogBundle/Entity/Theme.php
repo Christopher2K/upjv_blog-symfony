@@ -97,4 +97,14 @@ class Theme
     {
         return $this->articles;
     }
+
+    /**
+     * Stringify this object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->title;
+    }
 }

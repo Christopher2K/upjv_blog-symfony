@@ -13,19 +13,25 @@ security:
         BlogBundle\Entity\User: plaintext
 
     role_hierarchy:
-        REVIEWER: READER
+        ROLE_REVIEWER: ROLE_READER
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            pattern: ^/(_(profiler|wdt)|css|images|js|node_modules)/
             security: false
 
+        login:
+            pattern: ^/login$
+            anonymous: ~
+
         blog:
-            pattern: ^/(logout|login_check|articles|themes|admin)
+            pattern: ^/(logout|login_check|articles|themes|admin|)?
+            provider: blog_users
             form_login:
                 login_path: /login
                 check_path: /login_check
+                default_target_path: /
             logout:
                 path: /logout
-                target: /a
+                target: /
