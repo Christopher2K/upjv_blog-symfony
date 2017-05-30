@@ -3,10 +3,10 @@
 namespace BlogBundle\Controller;
 
 use BlogBundle\Entity\User;
-use BlogBundle\Form\Type\UserType;
+use BlogBundle\Form\UserType;
 use Doctrine\Common\Annotations\Annotation\Required;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class UsersController extends Controller
@@ -37,16 +37,24 @@ class UsersController extends Controller
             throw $this->createNotFoundException('L utilisateur[id='.$id.'] inexistant');
         $form = $this->createForm(UserType::class,$user,array('action'=>$this->generateUrl('admin_user_edit_suite',
             array('id'=>$user->getId()))));
+        $form->remove('username');
         $form->add('submit',SubmitType::class,array('label'=>'Modifier'));
-        return $this->render('BlogBundle:User:modifier.html.twig',array('monFormulaire'=>$form->createView()));
+        return $this->render('BlogBundle:Users:modifier.html.twig',array('monFormulaire'=>$form->createView(),'user'=>$user));
     }
 
-    public function editActionSuite(Request $request, $id)
+    /**
+     * //treat datas from editAction
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function editSuiteAction(Request $request, $id)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $user=$entityManager->getRepository('BlogBundle:User')->find($id);
         $form = $this->createForm(UserType::class,$user,array('action'=>$this->generateUrl('admin_user_edit_suite',
             array('id'=>$user->getId()))));
+        $form->remove('username');
         $form->add('submit',SubmitType::class,array('label'=>'Modifier'));
         $form->handleRequest($request);
         if ($form->isValid())
@@ -57,6 +65,44 @@ class UsersController extends Controller
             $url=$this->generateUrl('user_list');
             return $this->redirect($url);
         }
-        return $this->render('BlogBundle:User:modifier.html.twig',array('monFormulaire'=>$form->createView()));
+        return $this->render('BlogBundle:Users:modifier.html.twig',array('monFormulaire'=>$form->createView(),'user'=>$user));
     }
+
+    /**
+     * show form and treat to add user into database
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function ajouterAction(Request $request)
+    {
+        $user = new User();
+        $form=$this->createForm(UserType::class,$user,array('action'=>$this->generateUrl(('admin_user_ajouter'))));
+        $form->add('submit',SubmitType::class,array('label'=>'Ajouter'));
+        $form->handleRequest($request);
+        if ($form->isValid()){
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+            $url=$this->generateUrl('user_list');
+            return $this->redirect($url);
+        }
+        return $this->render('BlogBundle:Users:ajouter.html.twig',array('monFormulaire'=>$form->createView()));
+    }
+
+    public function deleteAction($id)
+    {
+        $em=$this->getDoctrine()->getManager();
+        $userRepository = $this->getDoctrine()->getRepository('BlogBundle:User');
+        $user = $userRepository->find($id);
+        if($user!=null){
+            $em->persist($user);
+            $em->remove($user);
+            $em->flush();
+            $url=$this->generateUrl('user_list');
+            return $this->redirect($url);
+        }
+        $url=$this->generateUrl('user_list');
+        return $this->redirect($url);
+    }
+
 }
