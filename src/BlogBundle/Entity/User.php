@@ -88,7 +88,7 @@ class User implements UserInterface, \Serializable
 
     public function getRoles()
     {
-        return [];
+        return $this->roles->toArray();
     }
 
     public function getSalt()
