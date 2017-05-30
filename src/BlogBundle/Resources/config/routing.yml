@@ -12,6 +12,13 @@ login_check:
 logout:
     path: /logout
 
-article_index:
+article_list:
     path:     /articles
-    defaults: { _controller: BlogBundle:Articles:index }
+    defaults: { _controller: BlogBundle:Articles:list }
+
+article_show:
+    path:     /articles/{id}
+    requirements:
+        id: '\d+'
+    defaults: { _controller: BlogBundle:Articles:show }
+

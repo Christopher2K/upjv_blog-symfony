@@ -13,7 +13,7 @@ security:
         BlogBundle\Entity\User: plaintext
 
     role_hierarchy:
-        ROLE_REVIEWER: ROLE_READER
+        REVIEWER: READER
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -28,8 +28,4 @@ security:
                 check_path: /login_check
             logout:
                 path: /logout
-                target: /
-
-        home:
-            pattern: ^/$
-            anonymous: ~
+                target: /a

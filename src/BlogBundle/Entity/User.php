@@ -6,7 +6,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * User
  */
-class User implements UserInterface
+class User implements UserInterface, \Serializable
 {
     /**
      * @var int
@@ -263,5 +263,15 @@ class User implements UserInterface
     public function getThemes()
     {
         return $this->themes;
+    }
+
+    /**
+     * Return the username
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->username;
     }
 }
