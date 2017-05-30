@@ -22,3 +22,7 @@ article_show:
         id: '\d+'
     defaults: { _controller: BlogBundle:Articles:show }
 
+
+choose_theme:
+    path:     /chooseTheme
+    defaults: { _controller: BlogBundle:Themes:chooseTheme }
