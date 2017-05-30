@@ -5,6 +5,15 @@
 {% block body %}
     <div class="container">
         <div class="row">
+            <h3>Debug purpose</h3>
+            {{ app.user.id }} - {{ app.user }}
+            <ul>
+                {% for role in app.user.roles %}
+                    <li>{{ role }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="row">
             <h1>Articles</h1>
             <p>La liste des articles du blog !</p>
         </div>
