@@ -1,0 +1,13 @@
+{{ form_start(myForm) }}
+    {{ form_errors(myForm) }}
+<table>
+    <tr>
+        <td>{{ form_row(myForm.content) }}</td>
+        <td>{{ form_row(myForm.createdAt) }}</td>
+        <td>{{ form_row(myForm.title) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_row(myForm.submit) }}</td>
+    </tr>
+</table>
+{{ form_end(myForm) }}

@@ -22,6 +22,10 @@ article_show:
         id: '\d+'
     defaults: { _controller: BlogBundle:Articles:show }
 
+article_add:
+    path:     /articles/add
+    defaults: { _controller: BlogBundle:Articles:add }
+
 user_list:
   path: /admin/users
   defaults: { _controller: BlogBundle:Users:list }
@@ -49,3 +53,11 @@ admin_user_delete:
 choose_theme:
     path:     /chooseTheme
     defaults: { _controller: BlogBundle:Themes:chooseTheme }
+
+article_add2:
+    path:     /articles/{title}/{content}/{createdAt}/{author}/{themes}
+    defaults: { _controller: BlogBundle:Articles:add2 }
+
+article_add3:
+    path:     /articles/add3
+    defaults: { _controller: BlogBundle:Articles:add3 }
