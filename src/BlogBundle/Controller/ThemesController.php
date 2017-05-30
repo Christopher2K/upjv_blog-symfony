@@ -16,12 +16,4 @@ class ThemesController extends Controller
         ));
 
     }
-
-    public function exampleAction(Request $request, $id){
-        //..
-        $inputValue = $request->get("button_name");
-        //..
-    }
-
-
 }
