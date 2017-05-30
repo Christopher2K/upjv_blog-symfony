@@ -1,0 +1,15 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Blog - modification d'un utilisateur {% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <h1>Utilisateurs</h1>
+            <p>La liste des utilisateurs du blog !</p>
+        </div>
+        <div class="row">
+            {{ form(monFormulaire) }}
+        </div>
+    </div>
+{% endblock %}

@@ -22,3 +22,18 @@ article_show:
         id: '\d+'
     defaults: { _controller: BlogBundle:Articles:show }
 
+user_list:
+  path: /admin/users
+  defaults: { _controller: BlogBundle:Users:list }
+
+admin_user_edit:
+  path: /admin/users/{id}
+  defaults: { _controller: BlogBundle:Users:edit }
+
+admin_user_edit_suite:
+  path: /admin/usersSuite/{id}
+  defaults: { _controller: BlogBundle:Users:edit }
+
+choose_theme:
+    path:     /chooseTheme
+    defaults: { _controller: BlogBundle:Themes:chooseTheme }
