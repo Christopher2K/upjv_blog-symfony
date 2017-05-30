@@ -15,4 +15,5 @@ vendor/
 web/bundles/
 web/node_modules
 .idea/
+*.lock
 
