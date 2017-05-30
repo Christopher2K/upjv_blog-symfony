@@ -22,7 +22,7 @@ security:
             security: false
 
         blog:
-            pattern: ^/(logout|login_check|articles|themes)
+            pattern: ^/(logout|login_check|articles|themes|admin)
             form_login:
                 login_path: /login
                 check_path: /login_check
