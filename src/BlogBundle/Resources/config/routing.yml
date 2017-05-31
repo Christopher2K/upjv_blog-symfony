@@ -1,7 +1,9 @@
+# HOMEPAGE
 blog_homepage:
     path:     /
     defaults: { _controller: BlogBundle:Default:index }
 
+# ESSENTIAL THINGS
 login:
     path:     /login
     defaults: { _controller: BlogBundle:Security:login }
@@ -12,6 +14,8 @@ login_check:
 logout:
     path: /logout
 
+
+# ARTICLE RELATIVES
 article_list:
     path:     /articles
     defaults: { _controller: BlogBundle:Articles:list }
@@ -26,7 +30,24 @@ article_add:
     path:     /articles/add
     defaults: { _controller: BlogBundle:Articles:add }
 
-user_list:
+article_add2:
+    path:     /articles/{title}/{content}/{createdAt}/{author}/{themes}
+    defaults: { _controller: BlogBundle:Articles:add2 }
+
+article_add3:
+    path:     /articles/add3
+    defaults: { _controller: BlogBundle:Articles:add3 }
+
+comment_add_from_article:
+    path:     /comments/article/{articleId}
+    methods: [POST]
+    requirements:
+        articleId: '\d+'
+    defaults: { _controller: BlogBundle:Comment:add }
+
+
+# ADMIN RELATIVES
+admin_user_list:
   path: /admin/users
   defaults: { _controller: BlogBundle:Users:list }
 
@@ -54,10 +75,4 @@ choose_theme:
     path:     /chooseTheme
     defaults: { _controller: BlogBundle:Themes:chooseTheme }
 
-article_add2:
-    path:     /articles/{title}/{content}/{createdAt}/{author}/{themes}
-    defaults: { _controller: BlogBundle:Articles:add2 }
 
-article_add3:
-    path:     /articles/add3
-    defaults: { _controller: BlogBundle:Articles:add3 }
