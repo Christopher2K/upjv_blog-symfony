@@ -4,7 +4,14 @@ BlogBundle\Entity\Comment:
             - Length:
                 min: 10
                 max: 2000
-                exactMessage: Entre 10 et 2000 caractères.
+                minMessage: Le commentaire doit faire au minimum {{ limit }} caractères.
+                maxMessage: Le commentaire peut faire au maximum {{ limit }} caractères.
+        note:
+            - Range:
+                min: 0
+                max: 10
+                minMessage: Vous ne pouvez pas mettre une note inférieure à {{ limit }}.
+                maxMessage: Vous ne pouvez pas mettre une note supérieure à {{ limit }}.
 
 BlogBundle\Entity\Article:
   properties:
