@@ -140,11 +140,80 @@ class Comment
     }
 
     /**
-     * Set an initial value at the article creation
+     * Set an initial value at the comment creation
      *
      * @return void
      */
-    public function setCreatedAtInitialValue() {
+    public function setCreatedAtInitialValue()
+    {
         $this->createdAt = new \DateTime('now');
+    }
+
+    /**
+     * Set an initial value at each persistence of this comment
+     *
+     * @return void
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTime('now');
+    }
+    /**
+     * @var \DateTime
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime
+     */
+    private $modifiedAt;
+
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return Comment
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set modifiedAt
+     *
+     * @param \DateTime $modifiedAt
+     *
+     * @return Comment
+     */
+    public function setModifiedAt($modifiedAt)
+    {
+        $this->modifiedAt = $modifiedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get modifiedAt
+     *
+     * @return \DateTime
+     */
+    public function getModifiedAt()
+    {
+        return $this->modifiedAt;
     }
 }
