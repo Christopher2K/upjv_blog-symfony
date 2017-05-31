@@ -1,0 +1,5 @@
+{% for message in app.session.flashBag.get('error') %}
+    <div class="alert alert-danger">
+        <strong>Erreur !</strong> {{ message }}
+    </div>
+{% endfor %}

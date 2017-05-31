@@ -13,6 +13,11 @@
         <div class="row">
             <h2 class="col-xs-12">Commentaires</h2>
 
+            <div class="col-xs-12">
+                {% include 'flashes/notice-flash.html.twig' %}
+                {% include 'flashes/error-flash.html.twig' %}
+            </div>
+
             {% if is_granted('ROLE_REVIEWER') %}
                 <h3 class="col-xs-12">Poster un commentaire</h3>
                 {{ form_start(form_comment, {'attr': {'class': 'col-xs-12'}}) }}
