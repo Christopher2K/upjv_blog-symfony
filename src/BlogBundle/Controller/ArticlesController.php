@@ -29,12 +29,12 @@ class ArticlesController extends Controller
     }
 
     /**
-     * Display an articles and his comments
+     * DISPLAY AN ANTICLE AND HIS COMMENTS
      *
      * @param $id - ID of the article
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(Request $request, $id)
+    public function showAction($id)
     {
         // Datas
         $articleRepository = $this->getDoctrine()->getRepository('BlogBundle:Article');
@@ -45,7 +45,6 @@ class ArticlesController extends Controller
             'article' => $article->getId()
         ]);
 
-
         // Form comment
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
@@ -55,19 +54,15 @@ class ArticlesController extends Controller
             ->setNote(0);
 
         $formComment = $this->createForm(CommentType::class, $newComment, [
-            'action' => $this->generateUrl('article_show', ['id' => $id])
+            'action' => $this->generateUrl('comment_add_from_article', ['articleId' => $id])
         ]);
 
-        $formComment->handleRequest($request);
-        if ($formComment->isSubmitted() && $formComment->isValid()) {
-            $newComment = $formComment->getData();
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($newComment);
-            $em->flush();
-
-            return $this->redirectToRoute('article_show', ['id' => $id]);
+        // Get the preivous request in order to display forms errors or naaaaah.
+        if ($this->get('session')->has('previousRequest')) {
+            $formComment = $this->createForm(CommentType::class);
+            $formComment->handleRequest($this->get('session')->get('previousRequest'));
+            $this->get('session')->remove('previousRequest');
         }
-
 
         return $this->render('BlogBundle:Articles:show.html.twig', [
             'article' => $article,
