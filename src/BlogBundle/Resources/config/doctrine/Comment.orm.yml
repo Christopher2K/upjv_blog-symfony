@@ -29,5 +29,5 @@ BlogBundle\Entity\Comment:
             inversedBy: comments
 
     lifecycleCallbacks:
-        prePersist: [setCreatedAtInitialValue, setUpdatedAtValue]
-        preFlush: [setUpdatedAtValue]
+        prePersist: [setCreatedAtInitialValue, setModifedAtInitialValue]
+        preFlush: [setModifedAtInitialValue]

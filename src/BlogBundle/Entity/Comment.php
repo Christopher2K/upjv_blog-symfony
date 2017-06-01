@@ -154,9 +154,9 @@ class Comment
      *
      * @return void
      */
-    public function setUpdatedAtValue()
+    public function setModifedAtInitialValue()
     {
-        $this->updatedAt = new \DateTime('now');
+        $this->modifiedAt = new \DateTime('now');
     }
     /**
      * @var \DateTime
