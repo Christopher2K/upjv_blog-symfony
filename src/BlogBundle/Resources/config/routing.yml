@@ -38,12 +38,18 @@ article_add3:
     path:     /articles/add3
     defaults: { _controller: BlogBundle:Articles:add3 }
 
-comment_add_from_article:
-    path:     /comments/article/{articleId}
-    methods: [POST]
+comment_add:
+    path:     /comments/add/{articleId}
     requirements:
         articleId: '\d+'
+    methods: [POST]
     defaults: { _controller: BlogBundle:Comment:add }
+
+comment_delete:
+    path:   /comments/delete/{commentId}
+    requirements:
+        commentId: '\d+'
+    defaults: { _controller: BlogBundle:Comment:delete }
 
 
 # ADMIN RELATIVES

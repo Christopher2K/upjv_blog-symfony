@@ -41,9 +41,7 @@ class ArticlesController extends Controller
         $commentRepository = $this->getDoctrine()->getRepository('BlogBundle:Comment');
 
         $article = $articleRepository->find($id);
-        $comments = $commentRepository->findBy([
-            'article' => $article->getId()
-        ]);
+        $comments = $commentRepository->findAllByArticleWithOrder($article);
 
         // Form comment
         $user = $this->get('security.token_storage')->getToken()->getUser();
@@ -54,12 +52,14 @@ class ArticlesController extends Controller
             ->setNote(0);
 
         $formComment = $this->createForm(CommentType::class, $newComment, [
-            'action' => $this->generateUrl('comment_add_from_article', ['articleId' => $id])
+            'action' => $this->generateUrl('comment_add', ['articleId' => $id])
         ]);
 
         // Get the preivous request in order to display forms errors or naaaaah.
         if ($this->get('session')->has('previousRequest')) {
-            $formComment = $this->createForm(CommentType::class);
+            $formComment = $this->createForm(CommentType::class, $newComment, [
+                'action' => $this->generateUrl('comment_add', ['articleId' => $id])
+            ]);
             $formComment->handleRequest($this->get('session')->get('previousRequest'));
             $this->get('session')->remove('previousRequest');
         }

@@ -49,18 +49,29 @@
             {% endif %}
 
             <h3 class="col-xs-12">Précédentes réactions...</h3>
-            {% for comment in comments %}
-                <div class="col-xs-12 col-md-10 col-md-offset-1">
-                    <div class="col-md-4">
-                        <strong>{{ comment.author }}</strong><br/>
-                        <em>Note: {{ comment.note }} / 10</em>
-                        <p>{{ comment.content }}</p>
+            <div class="col-xs-12">
+                {% for comment in comments %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <p>
+                                <a href="{{ path('comment_delete', {'commentId': comment.id}) }}" style="margin-right: 20px;">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                                Commentaire de <strong>{{ comment.author }}</strong>.
+                                <em>Note: {{ comment.note }} / 10</em>.
+                                Posté le {{ comment.createdAt.format('Y-m-d H:i:s') }}
+                            </p>
+                        </div>
+                        <div class="panel-body">
+                            <p>{{ comment.content }}</p>
+                        </div>
                     </div>
-                </div>
-            {% endfor %}
-            {% if comments | length == 0 %}
-                <p>Pas de commentaires sous cet article !</p>
-            {% endif %}
+                {% endfor %}
+
+                {% if comments | length == 0 %}
+                    <p>Pas de commentaires sous cet article !</p>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}

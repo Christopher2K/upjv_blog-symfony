@@ -2,6 +2,8 @@
 
 namespace BlogBundle\Repository;
 
+use BlogBundle\Entity\Article;
+
 /**
  * CommentRepository
  *
@@ -10,4 +12,13 @@ namespace BlogBundle\Repository;
  */
 class CommentRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findAllByArticleWithOrder(Article $article)
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb->where('c.article = :article')
+            ->setParameter('article', $article->getId())
+            ->orderBy('c.createdAt', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
 }
