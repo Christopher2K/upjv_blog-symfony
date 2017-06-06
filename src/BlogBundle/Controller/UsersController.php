@@ -86,7 +86,7 @@ class UsersController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-            $url=$this->generateUrl('user_list');
+            $url=$this->generateUrl('admin_user_list');
             return $this->redirect($url);
         }
         return $this->render('BlogBundle:Users:ajouter.html.twig',array('monFormulaire'=>$form->createView()));
@@ -101,10 +101,10 @@ class UsersController extends Controller
             $em->persist($user);
             $em->remove($user);
             $em->flush();
-            $url=$this->generateUrl('user_list');
+            $url=$this->generateUrl('admin_user_list');
             return $this->redirect($url);
         }
-        $url=$this->generateUrl('user_list');
+        $url=$this->generateUrl('admin_user_list');
         return $this->redirect($url);
     }
 

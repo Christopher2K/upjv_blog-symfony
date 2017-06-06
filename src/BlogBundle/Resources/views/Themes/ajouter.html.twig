@@ -1,18 +1,16 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}Blog - création d'un utilisateur {% endblock %}
+{% block title %}Blog - Création d'un theme {% endblock %}
 
 {% block body %}
     <div class="container">
         <div class="row">
-            <h1>Création d'un utilisateur</h1>
+            <h1>Création d'un thème</h1>
         </div>
         <div class="row">
             {{ form_start(monFormulaire) }}
             {{ form_errors(monFormulaire) }}
-            {{ form_row(monFormulaire.username) }}
-            {{ form_row(monFormulaire.password) }}
-            {{ form_row(monFormulaire.roles) }}
+            {{ form_row(monFormulaire.title) }}
             {{ form_row(monFormulaire.submit) }}
             {{ form_end(monFormulaire) }}
         </div>

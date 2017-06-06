@@ -77,6 +77,18 @@ admin_user_delete:
   path: /admin/users/delete/{id}
   defaults: { _controller: BlogBundle:Users:delete }
 
+admin_theme_list:
+  path: /admin/themes
+  defaults: { _controller: BlogBundle:Themes:list }
+
+admin_theme_ajouter:
+  path: /admin/themes/new
+  defaults: { _controller: BlogBundle:Themes:ajouter }
+
+admin_theme_delete:
+  path: /admin/themes/delete/{id}
+  defaults: { _controller: BlogBundle:Themes:delete }
+
 choose_theme:
     path:     /chooseTheme
     defaults: { _controller: BlogBundle:Themes:chooseTheme }

@@ -1,0 +1,24 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Blog - Liste des themes{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <h1>Utilisateurs</h1>
+            <p>La liste des themes du blog !</p>
+            <a href="{{ path('admin_theme_ajouter')}}">Ajouter un theme</a>
+        </div>
+        <div class="row">
+            <ul>
+                {% for theme in themes %}
+                    <div class="col-md-12 col-xs-12">
+                        <li>   {{ theme.title}}
+                            <a href="{{ path('admin_theme_delete', { 'id': theme.id })}}" title="Supprimer le thème"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                        </li>
+                    </div>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
