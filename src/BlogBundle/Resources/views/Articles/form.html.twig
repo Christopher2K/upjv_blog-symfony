@@ -2,12 +2,19 @@
     {{ form_errors(myForm) }}
 <table>
     <tr>
-        <td>{{ form_row(myForm.content) }}</td>
-        <td>{{ form_row(myForm.createdAt) }}</td>
         <td>{{ form_row(myForm.title) }}</td>
+        <br>
+    </tr>
+    <tr>
+        <td>{{ form_row(myForm.content) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_row(myForm.themes) }}</td>
     </tr>
     <tr>
         <td>{{ form_row(myForm.submit) }}</td>
     </tr>
+
+
 </table>
 {{ form_end(myForm) }}

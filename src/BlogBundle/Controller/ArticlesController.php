@@ -118,6 +118,7 @@ class ArticlesController extends Controller
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
+          //  $article->setCreatedAtInitialValue();
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
             $entityManager->flush();

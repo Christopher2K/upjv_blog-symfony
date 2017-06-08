@@ -89,6 +89,15 @@ admin_theme_delete:
   path: /admin/themes/delete/{id}
   defaults: { _controller: BlogBundle:Themes:delete }
 
+admin_reportingarticle_list:
+  path: /admin/reporting/articles/
+  defaults: { _controller: BlogBundle:ReportingArticle:list }
+
+admin_reportingarticle_test:
+  path: /admin/reporting/articles/test
+  defaults: { _controller: BlogBundle:ReportingArticle:test }
+
+
 choose_theme:
     path:     /chooseTheme
     defaults: { _controller: BlogBundle:Themes:chooseTheme }

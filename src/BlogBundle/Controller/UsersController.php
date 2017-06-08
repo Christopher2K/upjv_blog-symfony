@@ -98,6 +98,7 @@ class UsersController extends Controller
         $userRepository = $this->getDoctrine()->getRepository('BlogBundle:User');
         $user = $userRepository->find($id);
         if($user!=null){
+
             $em->persist($user);
             $em->remove($user);
             $em->flush();

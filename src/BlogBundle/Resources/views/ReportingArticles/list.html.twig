@@ -1,0 +1,24 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Blog - Liste des signalements d'articles{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <h1>Signalements</h1>
+            <p>La liste des signalements du blog !</p>
+        </div>
+        <div class="row">
+            <ul>
+            {% for article in reports %}
+                <div class="col-md-12 col-xs-12">
+                 <li>
+                     <a href="{{ path('article_show', { 'id': article.Article.id}) }}"> {{ article.Article.title }} </a>
+                     signalé par <b>{{ article.User.Username }}</b>
+                 </li>
+                </div>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
