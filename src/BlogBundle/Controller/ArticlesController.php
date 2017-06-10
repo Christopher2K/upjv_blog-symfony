@@ -42,7 +42,13 @@ class ArticlesController extends Controller
 
         $article = $articleRepository->find($id);
         $comments = $commentRepository->findAllByArticleWithOrder($article);
-
+        $moyenne=0;
+        if (sizeof($comments)>0) {
+            foreach ($comments as $comment) {
+                $moyenne += $comment->getNote();
+            }
+            $moyenne = $moyenne / sizeof($comments);
+        }
         // Form comment
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
@@ -74,6 +80,7 @@ class ArticlesController extends Controller
             'article' => $article,
             'comments' => $comments,
             'form_comment' => $formComment->createView(),
+            'moyenne' => $moyenne,
             'forms_modify_comment' => $modifyCommentsForms
         ]);
     }
@@ -91,6 +98,7 @@ class ArticlesController extends Controller
         $form->add('submit', SubmitType::class, array('label' => 'Add'));
         $form->handleRequest($request);
         if ($form->isValid()) {
+            $article->setAuthor($this->getUser());
             $article->setCreatedAt(date("Y m d"));
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
@@ -204,4 +212,12 @@ class ArticlesController extends Controller
         return $this->redirect($url);
     }
 
+    public function listByAuthorAction()
+    {
+        $articleRepository = $this->getDoctrine()->getRepository('BlogBundle:Article');
+        $articles = $articleRepository->findByAuthor($this->get('security.token_storage')->getToken()->getUser());
+        return $this->render('BlogBundle:Articles:listByAuthor.html.twig', [
+            'articles' => $articles
+        ]);
+    }
 }

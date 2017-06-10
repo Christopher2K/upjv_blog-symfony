@@ -65,7 +65,7 @@ class UsersController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-            $url=$this->generateUrl('user_list');
+            $url=$this->generateUrl('admin_user_list');
             return $this->redirect($url);
         }
         return $this->render('BlogBundle:Users:modifier.html.twig',array('monFormulaire'=>$form->createView(),'user'=>$user));

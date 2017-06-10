@@ -4,16 +4,16 @@
     <link href="{{ asset('css/comments.css') }}" rel="stylesheet" type="text/css"/>
 {% endblock %}
 {% block body %}
-
-
-        <div class="container">
-                <div class="row">
-                   <a href="{{ path('article_list') }}"> <span style="background-color:cornflowerblue; border-radius:0px; cursor:pointer;" class="label label-default"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>RETOUR</span></a><br><br>
+    <div class="container">
+        <div class="row">
+            <a href="{{ path('article_list') }}"> <span style="background-color:cornflowerblue; border-radius:0px; cursor:pointer;" class="label label-default"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>RETOUR</span></a><br><br>
             {% for theme in article.themes %}
                 <span class="label label-default">{{ theme }} </span> &nbsp;
             {% endfor %}
-            <br>Créé par <b>{{ article.getAuthor }} </b> le {{ article.createdAt|date("d/m/Y") }}
-            à {{ article.createdAt|date("H:i") }}
+            {% if article.getAuthor == app.user %}
+                Moyenne des notes {{ moyenne }}/10
+            {% endif %}
+            <br>Créé par <b>{{ article.getAuthor }} </b> le {{ article.createdAt|date("d/m/Y") }} à {{ article.createdAt|date("H:i") }}
             {% if app.user and 'ROLE_READER' in app.user.roles %}
                 <a href="{{ path('article_signaler', { 'id': article.id}) }}">signaler</a>
 
@@ -85,7 +85,7 @@
                                 <em>Note: {{ comment.note }} / 10</em>.
                                 Posté le {{ comment.createdAt.format('Y-m-d H:i:s') }}
                                 <span style="float:right;">
-                                {% if app.user and 'ROLE_READER' in app.user.roles %}
+                                {% if app.user and 'ROLE_READER' in app.user.roles or article.author == app.user %}
                                     <a href="{{ path('comment_signaler', { 'id': comment.id}) }}">Signaler</a>
                                 {% endif %}
                                 </span>

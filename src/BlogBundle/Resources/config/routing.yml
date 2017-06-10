@@ -90,6 +90,10 @@ comment_signaler:
     path: /comment/signaler/{id}
     defaults: { _controller: BlogBundle:Comment:signalerComment }
 
+article_list_by_author:
+  path: /articles/perso/
+  defaults: { _controller: BlogBundle:Articles:listByAuthor }
+
 # ADMIN RELATIVES
 admin_user_list:
   path: /admin/users
@@ -126,6 +130,7 @@ admin_theme_ajouter:
 admin_theme_delete:
   path: /admin/themes/delete/{id}
   defaults: { _controller: BlogBundle:Themes:delete }
+
 
 admin_reportingarticle_list:
   path: /admin/reporting/articles/
