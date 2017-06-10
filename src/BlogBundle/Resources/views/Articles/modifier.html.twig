@@ -1,0 +1,23 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Blog - modification d'un article {% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <h1>Modification</h1>
+            <p>De l'article <b>{{ article.title }}</b></p>
+            <p><a href="{{ path('article_delete', { 'id': article.id })}}">Supprimer l'article</a></p>
+        </div>
+        <div class="row">
+            {{ form_start(myForm) }}
+                {{ form_errors(myForm) }}
+
+            {{ form_row(myForm.title) }}
+            {{ form_row(myForm.content) }}
+            {{ form_row(myForm.themes) }}
+            {{ form_row(myForm.submit) }}
+            {{ form_end(myForm) }}
+        </div>
+    </div>
+{% endblock %}

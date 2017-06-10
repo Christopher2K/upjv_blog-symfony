@@ -10,7 +10,6 @@ use BlogBundle\Form\ArticleType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ArticlesController extends Controller
 {
@@ -85,46 +84,11 @@ class ArticlesController extends Controller
         $form->add('submit', SubmitType::class, array('label' => 'Add'));
         $form->handleRequest($request);
         if ($form->isValid()) {
+            $article->setCreatedAt(date("Y m d"));
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
             $entityManager->flush();
             $url = $this->generateUrl('article_show', array('id' => $article->getId()));
-            return $this->redirect($url);
-        }
-        return $this->render('BlogBundle:Articles:add.html.twig', array('myForm' => $form->createView()));
-    }
-
-    public function add2Action($title, $content, $createdAt, $author, $themes)
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-        $article = new Article();
-        //$article->setAuthor($author);
-        $article->setContent($content);
-        $article->setCreatedAt($createdAt);
-        $article->setTitle($title);
-        //$article->addTheme($themes);
-        $entityManager->persist($article);
-        $entityManager->flush();
-        return $this->redirectToRoute('article_show', array('id' => $article->getId()));
-    }
-
-    public function add3Action(Request $request)
-    {
-        $article = new Article();
-        $form = $this->createFormBuilder($article)
-            ->add('content', TextType::class)
-            ->add('createdAt', TextType::class)
-            ->add('title', TextType::class)
-            ->add('envoyer', SubmitType::class)
-            ->getForm();
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-          //  $article->setCreatedAtInitialValue();
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($article);
-            $entityManager->flush();
-            $url = $this->generateUrl('article_show', array('id' => $article->getId()));
-
             return $this->redirect($url);
         }
         return $this->render('BlogBundle:Articles:add.html.twig', array('myForm' => $form->createView()));
@@ -135,6 +99,66 @@ class ArticlesController extends Controller
         $repository = $this->getDoctrine()->getManager()->getRepository('BlogBundle:Article');
         $article = $repository->findAll();
         return $this->render('BlogBundle:Articles:navigation.html.twig', array('articles' => $article));
+    }
+
+    /**
+     * get User informations and display in form
+     * then call editActionSuite which treats datas
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editAction($id)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        if (!$article = $entityManager->getRepository('BlogBundle:Article')->find($id))
+            throw $this->createNotFoundException('L article[id='.$id.'] inexistant');
+        $form = $this->createForm(ArticleType::class, $article, array('action'=>$this->generateUrl('article_edit_suite',
+            array('id'=>$article->getId()))));
+        $form->add('submit', SubmitType::class, array('label'=>'Modifier'));
+        return $this->render('BlogBundle:Articles:modifier.html.twig', array('myForm'=>$form->createView(), 'article'=>$article));
+    }
+
+    /**
+     * //treat datas from editAction
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function editSuiteAction(Request $request, $id)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        if (!$article = $entityManager->getRepository('BlogBundle:Article')->find($id))
+            throw $this->createNotFoundException('L article[id='.$id.'] inexistant');
+        $form = $this->createForm(ArticleType::class, $article, array('action'=>$this->generateUrl('article_edit_suite',
+            array('id'=>$article->getId()))));
+        $form->add('submit',SubmitType::class, array('label'=>'Modifier'));
+        $form->handleRequest($request);
+        if ($form->isValid())
+        {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($article);
+            $entityManager->flush();
+            $url = $this->generateUrl('article_show', array('id'=>$article->getId()));
+            return $this->redirect($url);
+        }
+        return $this->render('BlogBundle:Articles:modifier.html.twig', array('myForm'=>$form->createView(), 'article'=>$article));
+    }
+
+    public function deleteAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $articleRepository = $this->getDoctrine()->getRepository('BlogBundle:Article');
+        $article = $articleRepository->find($id);
+        if($article != null){
+
+            $em->persist($article);
+            $em->remove($article);
+            $em->flush();
+            $url = $this->generateUrl('article_list');
+            return $this->redirect($url);
+        }
+        $url=$this->generateUrl('article_list');
+        return $this->redirect($url);
     }
 
     public function signalerAction($id)
