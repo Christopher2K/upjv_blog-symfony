@@ -65,6 +65,13 @@ comment_add:
     methods: [POST]
     defaults: { _controller: BlogBundle:Comment:add }
 
+comment_modify:
+    path: /comments/modify/{commentId}
+    requirements:
+        commentId: '\d+'
+    methods: [POST]
+    defaults: { _controller: BlogBundle:Comment:modify }
+
 comment_delete:
     path:   /comments/delete/{commentId}
     requirements:

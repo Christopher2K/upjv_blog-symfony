@@ -51,23 +51,30 @@ class ArticlesController extends Controller
             ->setAuthor($user)
             ->setNote(0);
 
+        $modifyCommentsForms = array_map(function (Comment $comment) {
+            return $this->createForm(CommentType::class, $comment, [
+                'action' => $this->generateUrl('comment_modify', ['commentId' => $comment->getId()])
+            ])->createView();
+        }, $comments);
+
         $formComment = $this->createForm(CommentType::class, $newComment, [
             'action' => $this->generateUrl('comment_add', ['articleId' => $id])
         ]);
 
         // Get the preivous request in order to display forms errors or naaaaah.
-        if ($this->get('session')->has('previousRequest')) {
+        if ($this->get('session')->has('previousRequestAdd')) {
             $formComment = $this->createForm(CommentType::class, $newComment, [
                 'action' => $this->generateUrl('comment_add', ['articleId' => $id])
             ]);
             $formComment->handleRequest($this->get('session')->get('previousRequest'));
-            $this->get('session')->remove('previousRequest');
+            $this->get('session')->remove('previousRequestAdd');
         }
 
         return $this->render('BlogBundle:Articles:show.html.twig', [
             'article' => $article,
             'comments' => $comments,
-            'form_comment' => $formComment->createView()
+            'form_comment' => $formComment->createView(),
+            'forms_modify_comment' => $modifyCommentsForms
         ]);
     }
 
