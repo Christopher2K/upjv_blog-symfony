@@ -73,7 +73,7 @@ comment_delete:
 
 comment_signaler:
     path: /comment/signaler/{id}
-    defaults: { _controller: BlogBundle:Comment:signaler }
+    defaults: { _controller: BlogBundle:Comment:signalerComment }
 
 # ADMIN RELATIVES
 admin_user_list:
@@ -116,11 +116,28 @@ admin_reportingarticle_list:
   path: /admin/reporting/articles/
   defaults: { _controller: BlogBundle:ReportingArticle:list }
 
+admin_reportingcomment_list:
+  path: /admin/reporting/comment/
+  defaults: { _controller: BlogBundle:ReportingComment:list }
+
 admin_reportingarticle_test:
   path: /admin/reporting/articles/test
   defaults: { _controller: BlogBundle:ReportingArticle:test }
 
+# REPORTING ARTICLE RELATIVES
+reporting_listePerso :
+  path: /reports/
+  defaults: { _controller: BlogBundle:ReportingArticle:listPerso }
 
+deleteReportArticle_listPerso :
+  path: /report/articles/{id}
+  defaults: { _controller: BlogBundle:ReportingArticle:delete }
+
+deleteReportComment_listPerso :
+  path: /report/articles/{id}
+  defaults: { _controller: BlogBundle:ReportingArticle:delete }
+
+# THEME RELATIVES
 choose_theme:
     path:     /chooseTheme
     defaults: { _controller: BlogBundle:Themes:chooseTheme }

@@ -6,6 +6,7 @@ use BlogBundle\Entity\Comment;
 use BlogBundle\Form\CommentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use BlogBundle\Entity\ReportingComment;
 
 class CommentController extends Controller
 {
@@ -88,7 +89,7 @@ class CommentController extends Controller
         return $this->redirect($referer);
     }
 
-    public function signalerComment($id)
+    public function signalerCommentAction($id)
     {
         $signalement = new ReportingComment;
         $comment = new comment;
@@ -98,7 +99,7 @@ class CommentController extends Controller
         $signalement->setUser($this->getUser());
         $em->persist($signalement);
         $em->flush();
-        $url = $this->generateUrl('comment_list');
+        $url = $this->generateUrl('article_list');
         return $this->redirect($url);
     }
 

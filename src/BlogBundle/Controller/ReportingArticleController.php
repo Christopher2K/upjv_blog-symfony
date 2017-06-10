@@ -46,4 +46,40 @@ class ReportingArticleController extends Controller
         $entityManager->persist($report2);
         $entityManager->flush();
     }
+
+    public function listPersoAction()
+    {
+        $reportRepository = $this->getDoctrine()->getRepository('BlogBundle:ReportingArticle');
+        $reports= $reportRepository ->findAll();
+        $reportRepository2 = $this->getDoctrine()->getRepository('BlogBundle:ReportingComment');
+        $reports2= $reportRepository2 ->findAll();
+        return $this->render('BlogBundle:ReportingArticles:listperso.html.twig', [
+            'reports' => $reports,
+            'reports2' => $reports2,
+        ]);
+    }
+    public function deleteAction($id)
+    {
+        $em=$this->getDoctrine()->getManager();
+        $userRepository = $this->getDoctrine()->getRepository('BlogBundle:ReportingArticle');
+        $report = $userRepository->find($id);
+        $userRepository2 = $this->getDoctrine()->getRepository('BlogBundle:ReportingComment');
+        $report2 = $userRepository2->find($id);
+        if($report !=null){
+            $em->persist($report);
+            $em->remove($report);
+            $em->flush();
+            $url=$this->generateUrl('reporting_listePerso');
+            return $this->redirect($url);
+        }
+        if($report2 !=null){
+            $em->persist($report2);
+            $em->remove($report2);
+            $em->flush();
+            $url=$this->generateUrl('reporting_listePerso');
+            return $this->redirect($url);
+        }
+        $url=$this->generateUrl('reporting_listePerso');
+        return $this->redirect($url);
+    }
 }
