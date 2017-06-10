@@ -1,8 +1,16 @@
 {% extends 'base.html.twig' %}
 {% block title %}Blog - {{ article.title }}{% endblock %}
 {% block body %}
-    <div class="container">
-        <div class="row">
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
+        <div class="container">
+                <div class="row">
+                    <span style="background-color:cornflowerblue; border-radius:0px;" class="label label-default" onclick="goBack()"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>RETOUR</span><br><br>
             {% for theme in article.themes %}
                 <span class="label label-default">{{ theme }} </span> &nbsp;
             {% endfor %}
