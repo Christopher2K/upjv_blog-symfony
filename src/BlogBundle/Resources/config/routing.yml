@@ -38,6 +38,10 @@ article_add3:
     path:     /articles/add3
     defaults: { _controller: BlogBundle:Articles:add3 }
 
+article_signaler:
+    path: /articles/signaler/{id}
+    defaults: { _controller: BlogBundle:Articles:signaler }
+
 comment_add:
     path:     /comments/add/{articleId}
     requirements:
@@ -51,6 +55,9 @@ comment_delete:
         commentId: '\d+'
     defaults: { _controller: BlogBundle:Comment:delete }
 
+comment_signaler:
+    path: /comment/signaler/{id}
+    defaults: { _controller: BlogBundle:Comment:signaler }
 
 # ADMIN RELATIVES
 admin_user_list:

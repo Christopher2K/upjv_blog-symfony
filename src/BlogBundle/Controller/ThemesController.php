@@ -16,20 +16,18 @@ class ThemesController extends Controller
     public function chooseThemeAction(Request $request)
     {
         {
-            $theme = new Theme();
-            $form = $this->createFormBuilder($theme)
-                ->add('title', EntityType::class, array(
-                        'class' => 'BlogBundle:Theme',
-                        'choice_label' => 'title',
-                        'multiple' => true,
-                        'expanded' => true,
-                ))
-                ->add('save', SubmitType::class, array('label' => 'Create Post'))
-                ->getForm();
+          $user = new user;
+          $form = $this->createFormBuilder($user)
+              ->add('themes')
+              ->add('envoyer', SubmitType::class)
+              ->getForm();
+          $form->handleRequest($request);
+            if($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
 
-            return $this->render('BlogBundle:Themes:choose_theme.html.twig', array(
-                'form' => $form->createView(),
-            ));
+
+            }
         }
     }
 

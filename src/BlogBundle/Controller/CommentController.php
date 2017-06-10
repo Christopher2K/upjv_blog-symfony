@@ -88,4 +88,18 @@ class CommentController extends Controller
         return $this->redirect($referer);
     }
 
+    public function signalerComment($id)
+    {
+        $signalement = new ReportingComment;
+        $comment = new comment;
+        $em = $this->getDoctrine()->getManager();
+        $comment = $em->getRepository('BlogBundle:Comment')->find($id);
+        $signalement->setComment($comment);
+        $signalement->setUser($this->getUser());
+        $em->persist($signalement);
+        $em->flush();
+        $url = $this->generateUrl('comment_list');
+        return $this->redirect($url);
+    }
+
 }

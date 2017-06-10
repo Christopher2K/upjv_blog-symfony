@@ -5,6 +5,7 @@ namespace BlogBundle\Controller;
 use BlogBundle\Entity\Comment;
 use BlogBundle\Form\CommentType;
 use BlogBundle\Entity\Article;
+use BlogBundle\Entity\ReportingArticle;
 use BlogBundle\Form\ArticleType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -134,5 +135,19 @@ class ArticlesController extends Controller
         $repository = $this->getDoctrine()->getManager()->getRepository('BlogBundle:Article');
         $article = $repository->findAll();
         return $this->render('BlogBundle:Articles:navigation.html.twig', array('articles' => $article));
+    }
+
+    public function signalerAction($id)
+    {
+        $signalement = new ReportingArticle;
+        $article = new article;
+        $em = $this->getDoctrine()->getManager();
+        $article = $em->getRepository('BlogBundle:Article')->find($id);
+        $signalement->setArticle($article);
+        $signalement->setUser($this->getUser());
+        $em->persist($signalement);
+        $em->flush();
+        $url = $this->generateUrl('article_list');
+        return $this->redirect($url);
     }
 }
