@@ -181,4 +181,27 @@ class ArticlesController extends Controller
         $url = $this->generateUrl('article_list');
         return $this->redirect($url);
     }
+
+    public function readAction($id) {
+        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $article = $em->getRepository('BlogBundle:Article')->find($id);
+        $user->addReadArticle($article);
+        $em->persist($user);
+        $em->flush();
+        $url = $this->generateUrl('article_show', ['id'=>$id]);
+        return $this->redirect($url);
+    }
+
+    public function dereadAction($id) {
+        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $article = $em->getRepository('BlogBundle:Article')->find($id);
+        $user->removeReadArticle($article);
+        $em->persist($user);
+        $em->flush();
+        $url = $this->generateUrl('article_show', ['id'=>$id]);
+        return $this->redirect($url);
+    }
+
 }

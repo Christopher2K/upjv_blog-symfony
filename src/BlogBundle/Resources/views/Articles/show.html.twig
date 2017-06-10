@@ -5,15 +5,10 @@
 {% endblock %}
 {% block body %}
 
-    <script>
-        function goBack() {
-            window.history.back();
-        }
-    </script>
 
         <div class="container">
                 <div class="row">
-                    <span style="background-color:cornflowerblue; border-radius:0px;" class="label label-default" onclick="goBack()"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>RETOUR</span><br><br>
+                   <a href="{{ path('article_list') }}"> <span style="background-color:cornflowerblue; border-radius:0px; cursor:pointer;" class="label label-default"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>RETOUR</span></a><br><br>
             {% for theme in article.themes %}
                 <span class="label label-default">{{ theme }} </span> &nbsp;
             {% endfor %}
@@ -21,6 +16,13 @@
             à {{ article.createdAt|date("H:i") }}
             {% if app.user and 'ROLE_READER' in app.user.roles %}
                 <a href="{{ path('article_signaler', { 'id': article.id}) }}">signaler</a>
+
+                    {% if app.user not in article.readBy %}
+                     <a href="{{ path('article_read', { 'id': article.id}) }}"><span style="background-color:#25BF72;" class="label label-default">Marquer comme lu</span></a>
+                    {% else %}
+                        <a href="{{ path('article_deread', { 'id': article.id}) }}"><span style="background-color:orange;" class="label label-default">Article déjà lu</span></a>
+                    {% endif %}
+
             {% endif %}
             <h1 class="col-xs-12">{{ article.title }}</h1>
 

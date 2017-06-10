@@ -58,6 +58,14 @@ article_signaler:
     path: /articles/signaler/{id}
     defaults: { _controller: BlogBundle:Articles:signaler }
 
+article_read:
+    path: /articles/read/{id}
+    defaults: { _controller: BlogBundle:Articles:read }
+
+article_deread:
+    path: /articles/deread/{id}
+    defaults: { _controller: BlogBundle:Articles:deread }
+
 comment_add:
     path:     /comments/add/{articleId}
     requirements:
