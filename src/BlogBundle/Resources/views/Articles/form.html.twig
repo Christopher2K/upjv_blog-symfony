@@ -1,19 +1,15 @@
 {{ form_start(myForm) }}
     {{ form_errors(myForm) }}
-<table>
-    <tr>
-        <td>{{ form_row(myForm.title) }}</td>
-        <br>
-    </tr>
-    <tr>
-        <td>{{ form_row(myForm.content) }}</td>
-    </tr>
-    <tr>
-        <td>{{ form_row(myForm.themes) }}</td>
-    </tr>
-    <tr>
-        <td>{{ form_row(myForm.submit) }}</td>
-    </tr>
+
+<br><br>
+    <b>Titre de l'article</b><br>
+{{ form_widget(myForm.title) }} <br><br>
+    <b>Contenu de l'article</b><br>
+{{ form_widget(myForm.content) }} <br><br>
+    <b>Theme(s) de l'article</b><br>
+{{ form_widget(myForm.themes) }} <br><br>
+{{ form_widget(myForm.submit) }}
+
 
 
 </table>

@@ -4,6 +4,7 @@ namespace BlogBundle\Controller;
 
 use BlogBundle\Entity\Comment;
 use BlogBundle\Form\CommentType;
+use BlogBundle\Form\SearchType;
 use BlogBundle\Entity\Article;
 use BlogBundle\Entity\ReportingArticle;
 use BlogBundle\Form\ArticleType;
@@ -95,7 +96,7 @@ class ArticlesController extends Controller
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article,
             array('action' => $this->generateUrl('article_add')));
-        $form->add('submit', SubmitType::class, array('label' => 'Add'));
+        $form->add('submit', SubmitType::class, array('label' => 'Ajouter'));
         $form->handleRequest($request);
         if ($form->isValid()) {
             $article->setAuthor($this->getUser());

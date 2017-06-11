@@ -1,7 +1,9 @@
 {% extends "::base.html.twig" %}
 
 {% block title %}Blog - modification d'un article {% endblock %}
-
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/modifier.css') }}"/>
+{%  endblock %}
 {% block body %}
     <div class="container">
         <div class="row">
@@ -12,11 +14,13 @@
         <div class="row">
             {{ form_start(myForm) }}
                 {{ form_errors(myForm) }}
-
-            {{ form_row(myForm.title) }}
-            {{ form_row(myForm.content) }}
-            {{ form_row(myForm.themes) }}
-            {{ form_row(myForm.submit) }}
+            <b>Titre de l'article :</b><br>
+            {{ form_widget(myForm.title) }}<br><br>
+            <b>COntenu de l'article:</b><br>
+            {{ form_widget(myForm.content) }}<br><br>
+            <b>Thèmes de l'article :</b><br>
+            {{ form_widget(myForm.themes) }}<br><br>
+            {{ form_widget(myForm.submit) }}
             {{ form_end(myForm) }}
         </div>
     </div>

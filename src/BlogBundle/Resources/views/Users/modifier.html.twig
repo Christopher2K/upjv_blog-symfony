@@ -5,17 +5,18 @@
 {% block body %}
     <div class="container">
         <div class="row">
-            <h1>Modification</h1>
+            <h1>Modification d'un utilisateur</h1>
             <p>De l'utilisateur <b>{{ user.userName }}</b></p>
             <p><a href="{{ path('admin_user_delete', { 'id': user.id })}}">Supprimer l'utilisateur</a></p>
         </div>
         <div class="row">
             {{ form_start(monFormulaire) }}
                 {{ form_errors(monFormulaire) }}
-
-            {{ form_row(monFormulaire.password) }}
-            {{ form_row(monFormulaire.roles) }}
-            {{ form_row(monFormulaire.submit) }}
+            <b>Changer mot de passe :</b><br>
+            {{ form_widget(monFormulaire.password) }}<br><br>
+            <b>Changer roles :</b><br>
+            {{ form_widget(monFormulaire.roles) }}<br><br>
+            {{ form_widget(monFormulaire.submit) }}
             {{ form_end(monFormulaire) }}
         </div>
     </div>

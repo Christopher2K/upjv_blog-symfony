@@ -1,8 +1,21 @@
 {% extends "::base.html.twig" %}
 
+
 {% block title %}Blog - Ajout d'un article{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/add.css') }}"/>
+{%  endblock %}
+
 {% block body %}
+
+    <div class="container">
+    <div class="row">
+
     <h2>Ajouter un article</h2>
+
     {% include "BlogBundle:Articles:form.html.twig" %}
+    </div>
+
+    </div>
 {%  endblock %}
