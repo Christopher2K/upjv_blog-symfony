@@ -8,28 +8,78 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Blog</a>
+            <a class="navbar-brand" href="{{ path('blog_homepage') }}">Blog</a>
         </div>
 
         <div class="collapse navbar-collapse" id="navbar-items">
             <ul class="nav navbar-nav">
-                <li><a href="{{ path('article_list') }}">Articles</a></li>
-                <li><a href="{{ path('theme_list_read') }}">Themes lecture</a></li>
-                <li><a href="{{ path('theme_list_review') }}">Themes critique</a></li>
-                <li><a href="{{ path('comment_list') }}">Commentaires</a></li>
+                {% if is_granted('ROLE_READER') %}
+                    <li><a href="{{ path('article_list') }}">Articles</a></li>
+                    <li><a href="{{ path('theme_list_read') }}">Themes lecture</a></li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            Mes reports<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Report articles</a></li>
+                            <li><a href="#">Report commentaires</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+
+                {% if is_granted('ROLE_REVIEWER') %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            Critique <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('theme_list_review') }}">Themes de critique</a></li>
+                            <li><a href="{{ path('comment_list') }}">Mes commentaires</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+
+
+                {% if is_granted('ROLE_WRITER') %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            Auteur <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('article_add') }}">Ajouter un article</a></li>
+                            <li><a href="">Mes articles</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            Administration <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Ajouter un utilisateur</a></li>
+                            <li><a href="#">Voir les utilisateurs</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="">Ajouter un theme</a></li>
+                            <li><a href="">Voir les themes</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="">Consulter les reports articles</a></li>
+                            <li><a href="">Consulter les reports commentaires</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                {% if is_granted('ROLE_READER') %}
+                    <form>
+                        <input name="q" type="search">
+                        <input type="submit" value="Rechercher">
+                    </form>
+                {% endif %}
                 <li><a href="{{ path('logout') }}">Deconnexion</a></li>
             </ul>
-            <ul style="margin-top:10px">
-
-            <form>
-                <input name="q" type="search">
-                <input type="submit" value="Rechercher">
-            </form>
-
-            </ul>
         </div>
-
     </div>
 </nav>
