@@ -1,4 +1,6 @@
-# HOMEPAGE
+# ######## #
+# HOMEPAGE #
+# ######## #
 blog_homepage:
     path:     /
     defaults: { _controller: BlogBundle:Default:index }
@@ -15,7 +17,9 @@ logout:
     path: /logout
 
 
-# ARTICLE RELATIVES
+# ################## #
+# ARTICLES RELATIVES #
+# ################## #
 article_list:
     path:     /articles
     defaults: { _controller: BlogBundle:Articles:list }
@@ -31,28 +35,21 @@ article_add:
     defaults: { _controller: BlogBundle:Articles:add }
 
 article_edit:
-  path: /articles/modifier/{id}
-  defaults: { _controller: BlogBundle:Articles:edit }
-  requirements:
-    id: \d{1,2}
+    path: /articles/edit/{id}
+    requirements:
+        id: \d{1,2}
+    defaults: { _controller: BlogBundle:Articles:edit }
 
-article_edit_suite:
-  path: /articles/modifierSuite/{id}
-  defaults: { _controller: BlogBundle:Articles:editSuite }
-  requirements:
-    _method: POST
+article_edit_next:
+    path: /articles/edit/{id}/next
+    requirements:
+        id: \d{1,2}
+    method: POST
+    defaults: { _controller: BlogBundle:Articles:editNext }
 
 article_delete:
   path: /articles/delete/{id}
   defaults: { _controller: BlogBundle:Articles:delete }
-
-article_add2:
-    path:     /articles/{title}/{content}/{createdAt}/{author}/{themes}
-    defaults: { _controller: BlogBundle:Articles:add2 }
-
-article_add3:
-    path:     /articles/add3
-    defaults: { _controller: BlogBundle:Articles:add3 }
 
 article_report:
     path: /articles/report/{id}
@@ -63,7 +60,7 @@ article_read:
     defaults: { _controller: BlogBundle:Articles:read }
 
 article_unread:
-    path: /articles/deread/{id}
+    path: /articles/unread/{id}
     defaults: { _controller: BlogBundle:Articles:unread }
 
 # ################## #
@@ -74,99 +71,32 @@ comment_add:
     requirements:
         articleId: '\d+'
     methods: [POST]
-    defaults: { _controller: BlogBundle:Comment:add }
+    defaults: { _controller: BlogBundle:Comments:add }
 
-comment_modify:
-    path: /comments/modify/{commentId}
+comment_edit:
+    path: /comments/edit/{commentId}
     requirements:
         commentId: '\d+'
     methods: [POST]
-    defaults: { _controller: BlogBundle:Comment:modify }
+    defaults: { _controller: BlogBundle:Comments:modify }
 
 comment_delete:
     path:   /comments/delete/{commentId}
     requirements:
         commentId: '\d+'
-    defaults: { _controller: BlogBundle:Comment:delete }
+    defaults: { _controller: BlogBundle:Comments:delete }
 
 comment_list:
     path: /comments
-    defaults: { _controller: BlogBundle:Comment:list }
+    defaults: { _controller: BlogBundle:Comments:list }
 
-comment_signaler:
-    path: /comment/signaler/{id}
-    defaults: { _controller: BlogBundle:Comment:signalerComment }
+comment_add_report:
+    path: /comment/report/add/{id}
+    defaults: { _controller: BlogBundle:Comments:report }
 
-article_list_by_author:
-  path: /articles/perso/
-  defaults: { _controller: BlogBundle:Articles:listByAuthor }
-
-# ####################### #
-# ADMINISTRATOR RELATIVES #
-# ####################### #
-admin_user_list:
-  path: /admin/users
-  defaults: { _controller: BlogBundle:Users:list }
-
-admin_user_edit:
-  path: /admin/users/{id}
-  defaults: { _controller: BlogBundle:Users:edit }
-  requirements:
-    id: \d{1,2}
-
-admin_user_edit_suite:
-  path: /admin/usersSuite/{id}
-  defaults: { _controller: BlogBundle:Users:editSuite }
-  requirements:
-    _method: POST
-
-admin_user_ajouter:
-  path: /admin/users/new
-  defaults: { _controller: BlogBundle:Users:ajouter }
-
-admin_user_delete:
-  path: /admin/users/delete/{id}
-  defaults: { _controller: BlogBundle:Users:delete }
-
-admin_theme_list:
-  path: /admin/themes
-  defaults: { _controller: BlogBundle:Themes:list }
-
-admin_theme_ajouter:
-  path: /admin/themes/new
-  defaults: { _controller: BlogBundle:Themes:ajouter }
-
-admin_theme_delete:
-  path: /admin/themes/delete/{id}
-  defaults: { _controller: BlogBundle:Themes:delete }
-
-
-admin_reportingarticle_list:
-  path: /admin/reporting/articles/
-  defaults: { _controller: BlogBundle:ReportingArticle:list }
-
-admin_reportingcomment_list:
-  path: /admin/reporting/comment/
-  defaults: { _controller: BlogBundle:ReportingComment:list }
-
-admin_reportingarticle_test:
-  path: /admin/reporting/articles/test
-  defaults: { _controller: BlogBundle:ReportingArticle:test }
-
-# REPORTING ARTICLE RELATIVES
-reporting_listePerso :
-  path: /reports/
-  defaults: { _controller: BlogBundle:ReportingArticle:listPerso }
-
-deleteReportArticle_listPerso :
-  path: /report/articles/{id}
-  defaults: { _controller: BlogBundle:ReportingArticle:delete }
-
-deleteReportComment_listPerso :
-  path: /report/articles/{id}
-  defaults: { _controller: BlogBundle:ReportingArticle:delete }
-
-# THEME RELATIVES
+# ################ #
+# THEMES RELATIVES #
+# ################ #
 theme_list_read:
     path: /themes/read
     defaults: { _controller: BlogBundle:Themes:listRead }
@@ -187,11 +117,71 @@ theme_delete_review:
         themeId: '\d+'
     defaults: { _controller: BlogBundle:Themes:deleteReview }
 
+## KESAKO
+article_list_by_author:
+  path: /articles/perso/
+  defaults: { _controller: BlogBundle:Articles:listByAuthor }
 
+# ####################### #
+# ADMINISTRATOR RELATIVES #
+# ####################### #
 
+# ADMIN & USERS
+admin_user_list:
+    path: /admin/users
+    defaults: { _controller: BlogBundle:Users:list }
 
-#choose_theme:
-#    path:     /chooseTheme
-#    defaults: { _controller: BlogBundle:Themes:chooseTheme }
+admin_user_add:
+    path: /admin/users/add
+    defaults: { _controller: BlogBundle:Users:add }
 
+admin_user_edit:
+    path: /admin/users/edit/{id}
+    requirements:
+        id: \d{1,2}
+    defaults: { _controller: BlogBundle:Users:edit }
+
+admin_user_edit_next:
+    path: /admin/users/edit/{id}/next
+    methods: [POST]
+    defaults: { _controller: BlogBundle:Users:editNext }
+
+admin_user_delete:
+    path: /admin/users/delete/{id}
+    defaults: { _controller: BlogBundle:Users:delete }
+
+# ADMIN & THEMES
+admin_theme_list:
+  path: /admin/themes
+  defaults: { _controller: BlogBundle:Themes:list }
+
+admin_theme_add:
+  path: /admin/themes/add
+  defaults: { _controller: BlogBundle:Themes:add }
+
+admin_theme_delete:
+  path: /admin/themes/delete/{id}
+  defaults: { _controller: BlogBundle:Themes:delete }
+
+# ADMIN & REPORTING
+admin_reporting_article_list:
+  path: /admin/reporting/articles
+  defaults: { _controller: BlogBundle:ReportingArticle:list }
+
+admin_reporting_comment_list:
+  path: /admin/reporting/comment
+  defaults: { _controller: BlogBundle:ReportingComment:list }
+
+# REPORTING ARTICLE RELATIVES
+reporting_list:
+  path: /reports
+  defaults: { _controller: BlogBundle:ReportingArticle:listPerso }
+
+reporting_article_show:
+  path: /report/articles/{id}
+  defaults: { _controller: BlogBundle:ReportingArticle:delete }
+
+reporting_comments_show:
+  path: /report/articles/{id}
+  defaults: { _controller: BlogBundle:ReportingArticle:delete }
 

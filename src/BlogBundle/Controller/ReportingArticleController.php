@@ -24,62 +24,70 @@ class ReportingArticleController extends Controller
     public function listAction()
     {
         $reportRepository = $this->getDoctrine()->getRepository('BlogBundle:ReportingArticle');
-        $reports= $reportRepository ->findAll();
+        $reports = $reportRepository->findAll();
+
         return $this->render('BlogBundle:ReportingArticles:list.html.twig', [
             'reports' => $reports
         ]);
     }
 
-    public function testAction()
-    {
-        $report = new ReportingArticle();
-        $report2 = new ReportingArticle();
-        $entityManager = $this->getDoctrine()->getManager();
-        $user=$entityManager->getRepository('BlogBundle:User')->find(2);
-        $art1 = $entityManager->getRepository('BlogBundle:Article')->find(3);
-        $art2 = $entityManager->getRepository('BlogBundle:Article')->find(2);
-        $report->setArticle($art1);
-        $report->setUser($user);
-        $entityManager->persist($report);
-        $report2->setArticle($art2);
-        $report2->setUser($user);
-        $entityManager->persist($report2);
-        $entityManager->flush();
-    }
-
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function listPersoAction()
     {
         $reportRepository = $this->getDoctrine()->getRepository('BlogBundle:ReportingArticle');
-        $reports= $reportRepository ->findAll();
+        $reports = $reportRepository->findAll();
         $reportRepository2 = $this->getDoctrine()->getRepository('BlogBundle:ReportingComment');
-        $reports2= $reportRepository2 ->findAll();
+        $reports2 = $reportRepository2->findAll();
+
         return $this->render('BlogBundle:ReportingArticles:listperso.html.twig', [
             'reports' => $reports,
             'reports2' => $reports2,
         ]);
     }
+
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function deleteAction($id)
     {
-        $em=$this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
         $userRepository = $this->getDoctrine()->getRepository('BlogBundle:ReportingArticle');
         $report = $userRepository->find($id);
         $userRepository2 = $this->getDoctrine()->getRepository('BlogBundle:ReportingComment');
         $report2 = $userRepository2->find($id);
-        if($report !=null){
+
+        if ($report != null) {
             $em->persist($report);
             $em->remove($report);
             $em->flush();
-            $url=$this->generateUrl('reporting_listePerso');
-            return $this->redirect($url);
         }
-        if($report2 !=null){
+
+        if ($report2 != null) {
             $em->persist($report2);
             $em->remove($report2);
             $em->flush();
-            $url=$this->generateUrl('reporting_listePerso');
-            return $this->redirect($url);
         }
-        $url=$this->generateUrl('reporting_listePerso');
-        return $this->redirect($url);
+
+        return $this->redirect($this->generateUrl('reporting_list'));
     }
+
+    //    public function testAction()
+//    {
+//        $report = new ReportingArticle();
+//        $report2 = new ReportingArticle();
+//        $entityManager = $this->getDoctrine()->getManager();
+//        $user=$entityManager->getRepository('BlogBundle:User')->find(2);
+//        $art1 = $entityManager->getRepository('BlogBundle:Article')->find(3);
+//        $art2 = $entityManager->getRepository('BlogBundle:Article')->find(2);
+//        $report->setArticle($art1);
+//        $report->setUser($user);
+//        $entityManager->persist($report);
+//        $report2->setArticle($art2);
+//        $report2->setUser($user);
+//        $entityManager->persist($report2);
+//        $entityManager->flush();
+//    }
 }

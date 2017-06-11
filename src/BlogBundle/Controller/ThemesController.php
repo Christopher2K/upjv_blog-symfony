@@ -13,6 +13,60 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class ThemesController extends Controller
 {
     /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listAction()
+    {
+        $themeRepository = $this->getDoctrine()->getRepository('BlogBundle:Theme');
+        $themes = $themeRepository->findAll();
+        return $this->render('BlogBundle:Themes:list.html.twig', [
+            'themes' => $themes
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function addAction(Request $request)
+    {
+        $theme = new Theme();
+        $form = $this->createForm(ThemeType::class, $theme, array('action' => $this->generateUrl(('admin_theme_ajouter'))));
+        $form->add('submit', SubmitType::class, array('label' => 'Ajouter'));
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($theme);
+            $entityManager->flush();
+            $url = $this->generateUrl('admin_theme_list');
+            return $this->redirect($url);
+        }
+
+        return $this->render('BlogBundle:Themes:add.html.twig', [
+            'monFormulaire' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $themeRepository = $this->getDoctrine()->getRepository('BlogBundle:Theme');
+        $theme = $themeRepository->find($id);
+
+        if ($theme != null) {
+            $em->remove($theme);
+            $em->flush();
+        }
+
+        return $this->redirect($this->generateUrl('admin_theme_list'));
+    }
+
+    /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -87,7 +141,8 @@ class ThemesController extends Controller
      * @param $themeId
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteReadAction($themeId) {
+    public function deleteReadAction($themeId)
+    {
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $userThemes = $this->getDoctrine()
             ->getRepository('BlogBundle:UserTheme')
@@ -112,7 +167,10 @@ class ThemesController extends Controller
         return $this->redirectToRoute('theme_list_read');
     }
 
-
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function listReviewAction(Request $request)
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
@@ -120,18 +178,17 @@ class ThemesController extends Controller
             ->getRepository('BlogBundle:UserTheme')
             ->findByUser($user);
 
-        $reviewThemes = array_filter($userThemes, function(UserTheme $ut) {
+        $reviewThemes = array_filter($userThemes, function (UserTheme $ut) {
             return $ut->getIsReviewer();
         });
 
-        $_notReviewer = array_filter($userThemes, function(UserTheme $ut) {
+        $_notReviewer = array_filter($userThemes, function (UserTheme $ut) {
             return !$ut->getIsReviewer();
         });
 
         $availiableThemes = array_map(function (UserTheme $ut) {
             return $ut->getTheme();
         }, $_notReviewer);
-
 
 
         $modifiedUserTheme = new UserTheme();
@@ -158,11 +215,11 @@ class ThemesController extends Controller
                 ->getRepository('BlogBundle:UserTheme')
                 ->findByUser($user);
 
-            $reviewThemes = array_filter($userThemes, function(UserTheme $ut) {
+            $reviewThemes = array_filter($userThemes, function (UserTheme $ut) {
                 return $ut->getIsReviewer();
             });
 
-            $_notReviewer = array_filter($userThemes, function(UserTheme $ut) {
+            $_notReviewer = array_filter($userThemes, function (UserTheme $ut) {
                 return !$ut->getIsReviewer();
             });
 
@@ -191,7 +248,8 @@ class ThemesController extends Controller
      * @param $themeId
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteReviewAction($themeId) {
+    public function deleteReviewAction($themeId)
+    {
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $userThemes = $this->getDoctrine()
             ->getRepository('BlogBundle:UserTheme')
@@ -214,47 +272,5 @@ class ThemesController extends Controller
         }
 
         return $this->redirectToRoute('theme_list_review');
-    }
-
-
-    public function listAction()
-    {
-        $uR = $this->getDoctrine()->getRepository('BlogBundle:Theme');
-        $themes = $uR->findAll();
-        return $this->render('qBlogBundle:Themes:list.html.twig', [
-            'themes' => $themes
-        ]);
-    }
-
-    public function ajouterAction(Request $request)
-    {
-        $theme = new Theme();
-        $form = $this->createForm(ThemeType::class, $theme, array('action' => $this->generateUrl(('admin_theme_ajouter'))));
-        $form->add('submit', SubmitType::class, array('label' => 'Ajouter'));
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($theme);
-            $entityManager->flush();
-            $url = $this->generateUrl('admin_theme_list');
-            return $this->redirect($url);
-        }
-        return $this->render('BlogBundle:Themes:ajouter.html.twig', array('monFormulaire' => $form->createView()));
-    }
-
-    public function deleteAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $userRepository = $this->getDoctrine()->getRepository('BlogBundle:Theme');
-        $user = $userRepository->find($id);
-        if ($user != null) {
-            $em->persist($user);
-            $em->remove($user);
-            $em->flush();
-            $url = $this->generateUrl('admin_theme_list');
-            return $this->redirect($url);
-        }
-        $url = $this->generateUrl('admin_theme_list');
-        return $this->redirect($url);
     }
 }

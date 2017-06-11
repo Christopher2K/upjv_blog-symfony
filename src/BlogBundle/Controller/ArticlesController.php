@@ -130,7 +130,7 @@ class ArticlesController extends Controller
         $form = $this->createForm(ArticleType::class, $article, array('action' => $this->generateUrl('article_edit_suite',
             array('id' => $article->getId()))));
         $form->add('submit', SubmitType::class, array('label' => 'Modifier'));
-        return $this->render('BlogBundle:Articles:modifier.html.twig', array('myForm' => $form->createView(), 'article' => $article));
+        return $this->render('BlogBundle:Articles:edit.html.twig', array('myForm' => $form->createView(), 'article' => $article));
     }
 
     /**
@@ -139,7 +139,7 @@ class ArticlesController extends Controller
      * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function editSuiteAction(Request $request, $id)
+    public function editNextAction(Request $request, $id)
     {
         $entityManager = $this->getDoctrine()->getManager();
         if (!$article = $entityManager->getRepository('BlogBundle:Article')->find($id))
@@ -148,6 +148,7 @@ class ArticlesController extends Controller
             array('id' => $article->getId()))));
         $form->add('submit', SubmitType::class, array('label' => 'Modifier'));
         $form->handleRequest($request);
+
         if ($form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
@@ -155,7 +156,8 @@ class ArticlesController extends Controller
             $url = $this->generateUrl('article_show', array('id' => $article->getId()));
             return $this->redirect($url);
         }
-        return $this->render('BlogBundle:Articles:modifier.html.twig', array('myForm' => $form->createView(), 'article' => $article));
+
+        return $this->render('BlogBundle:Articles:edit.html.twig', array('myForm' => $form->createView(), 'article' => $article));
     }
 
     /**
@@ -219,7 +221,6 @@ class ArticlesController extends Controller
         $em = $this->getDoctrine()->getManager();
         $article = $em->getRepository('BlogBundle:Article')->find($id);
         $user->removeReadArticle($article);
-        $em->persist($user);
         $em->flush();
         $url = $this->generateUrl('article_show', ['id' => $id]);
         return $this->redirect($url);
@@ -232,13 +233,14 @@ class ArticlesController extends Controller
     {
         $articleRepository = $this->getDoctrine()->getRepository('BlogBundle:Article');
         $articles = $articleRepository->findByAuthor($this->get('security.token_storage')->getToken()->getUser());
-        $moyenne=0;
-        $length=0;
-        if (sizeof($articles)>0) {
+        $moyenne = 0;
+        $length = 0;
+        if (sizeof($articles) > 0) {
             foreach ($articles as $article) {
-                foreach ($article->getComments() as $comment)
-                { $moyenne += $comment->getNote(); }
-                $length+=sizeof($article->getComments());
+                foreach ($article->getComments() as $comment) {
+                    $moyenne += $comment->getNote();
+                }
+                $length += sizeof($article->getComments());
             }
             $moyenne = $moyenne / $length;
         }

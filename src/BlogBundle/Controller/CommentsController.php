@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use BlogBundle\Entity\ReportingComment;
 
-class CommentController extends Controller
+class CommentsController extends Controller
 {
     /**
      * ADD A COMMENT TO THE SPECIFIED ARTICLE AND SEND A FLASH MESSAGE TO TELL WHAT HAPPENED
@@ -162,7 +162,7 @@ class CommentController extends Controller
         return $this->redirect($referer);
     }
 
-    public function signalerCommentAction($id)
+    public function reportAction($id)
     {
         $signalement = new ReportingComment;
         $comment = new comment;
