@@ -37,5 +37,8 @@ security:
                 target: /
 
     access_control:
-        - { path: ^/themes/read, roles: [ROLE_REVIEWER, ROLE_READER] }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/articles/(add|edit), roles: ROLE_WRITER }
+        - { path: ^/articles/(show)?, roles: ROLE_READER }
+        - { path: ^/themes/read, roles: ROLE_READER }
         - { path: ^/themes/review, roles: ROLE_REVIEWER }
