@@ -216,8 +216,19 @@ class ArticlesController extends Controller
     {
         $articleRepository = $this->getDoctrine()->getRepository('BlogBundle:Article');
         $articles = $articleRepository->findByAuthor($this->get('security.token_storage')->getToken()->getUser());
+        $moyenne=0;
+        $length=0;
+        if (sizeof($articles)>0) {
+            foreach ($articles as $article) {
+                foreach ($article->getComments() as $comment)
+                { $moyenne += $comment->getNote(); }
+                $length+=sizeof($article->getComments());
+            }
+            $moyenne = $moyenne / $length;
+        }
         return $this->render('BlogBundle:Articles:listByAuthor.html.twig', [
-            'articles' => $articles
+            'articles' => $articles,
+            'moyenne' => $moyenne
         ]);
     }
 }
