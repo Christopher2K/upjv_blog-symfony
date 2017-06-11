@@ -1,0 +1,52 @@
+{% extends "::base.html.twig" %}
+{% block title %}Blog - Mes themes de critique{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <h1>Mes themes de critiques</h1>
+        <p>Vous pouvez voir vos themes de critique et en ajouter ici</p>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <p>Vos thèmes de critères</p>
+
+            <ul>
+                {% for ut in user_themes %}
+                <li>{{ ut.theme.title }} <a href="{{ path('theme_delete_review', {'themeId': ut.theme.id }) }}">Supprimer ce thème de vos thèmes de critique</a></li>
+                {% endfor %}
+            </ul>
+
+            {% if user_themes | length == 0 %}
+                <p><strong>Vous n'avez pas encore de thèmes de critique</strong></p>
+            {% endif %}
+        </div>
+
+        <div class="col-md-4">
+            <h3>Ajouter un thème de critique</h3>
+
+            <div class="col-xs-12">
+                {% include 'flashes/notice-flash.html.twig' %}
+                {% include 'flashes/error-flash.html.twig' %}
+            </div>
+
+            {{ form_start(user_theme_form) }}
+
+            <div class="form-group">
+                {{ form_label(user_theme_form.theme, 'Theme') }}
+                {% if form_errors(user_theme_form.theme) %}
+                    <div class="alert alert-danger">
+                        <strong>Erreur !</strong> {{ form_errors(user_theme_form.theme) }}
+                    </div>
+                {% endif %}
+                {{ form_widget(user_theme_form.theme, {'attr': {'class': 'form-control'}}) }}
+            </div>
+
+            {{ form_row(user_theme_form.submit, {'label': 'Ajouter un thème', 'attr' : {'class' : 'btn btn-primary'}}) }}
+            {{ form_end(user_theme_form) }}
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

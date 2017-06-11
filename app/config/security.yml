@@ -35,3 +35,7 @@ security:
             logout:
                 path: /logout
                 target: /
+
+    access_control:
+        - { path: ^/themes/read, roles: [ROLE_REVIEWER, ROLE_READER] }
+        - { path: ^/themes/review, roles: ROLE_REVIEWER }

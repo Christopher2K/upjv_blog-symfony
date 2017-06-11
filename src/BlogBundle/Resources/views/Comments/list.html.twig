@@ -1,0 +1,77 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Blog - Liste de vos commentaires{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/comments.css') }}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <h1>Mes commentaires</h1>
+            <p>La liste de tous vos commentaires</p>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                {% include 'flashes/notice-flash.html.twig' %}
+                {% include 'flashes/error-flash.html.twig' %}
+            </div>
+            <div class="comments col-xs-12">
+                {% for comment in comments %}
+                    <div class="comment-show panel panel-default" data-comment_id="{{ comment.id }}">
+                        <div class="show-header panel-heading">
+                            <p class="_wrapper">
+                                <a href="{{ path('comment_delete', {'commentId': comment.id}) }}"
+                                   style="margin-right: 20px;">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                                {#Commentaire de <strong>{{ comment.author }}</strong>.#}
+                                <em>Note: {{ comment.note }} / 10</em>.
+                                Posté le {{ comment.createdAt.format('Y-m-d H:i:s') }}, Modifié
+                                le {{ comment.modifiedAt.format('Y-m-d H:i:s') }}
+                            </p>
+                        </div>
+                        <div class="show-body panel-body">
+                            <p class="body-content">{{ comment.content }}</p>
+                            {% if app.user == comment.author %}
+                                <div class="body-options">
+                                    <button class="options-modify btn btn-primary"
+                                            data-comment_id="{{ comment.id }}">Modifier le commentaire
+                                    </button>
+                                    <a href="{{ path('article_show', {'id': comment.article.id }) }}" class="options-article btn btn-primary">
+                                        Voir l'article
+                                    </a>
+                                </div>
+                            {% endif %}
+
+                        </div>
+                    </div>
+
+                    {{ form_start(forms_modify_comment[loop.index - 1], {'attr': {'class': 'comment-form hidden', 'data-comment_id': comment.id}}) }}
+                    <div class="form-group">
+                    {{ form_label(forms_modify_comment[loop.index - 1].note, 'Note') }}
+                    {{ form_widget(forms_modify_comment[loop.index - 1].note, {'attr': {'class': 'form-control', 'min': 0, 'max': 10}}) }}
+                    </div>
+
+                    <div class="form-group">
+                    {{ form_label(forms_modify_comment[loop.index - 1].content, 'Contenu du commentaire') }}
+                    {{ form_widget(forms_modify_comment[loop.index - 1].content, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+                    </div>
+
+                    {{ form_row(forms_modify_comment[loop.index - 1].submit, {'label': 'Modifier le commentaire', 'attr' : {'class' : 'btn btn-default'}}) }}
+                    {{ form_end(forms_modify_comment[loop.index - 1]) }}
+                {% endfor %}
+
+                {% if comments | length == 0 %}
+                    <p>Pas de commentaires de votre part !</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('javascript/comments.js') }}"></script>
+{% endblock %}

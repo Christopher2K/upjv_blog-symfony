@@ -28,6 +28,13 @@ BlogBundle\Entity\Comment:
             targetEntity: BlogBundle\Entity\Article
             inversedBy: comments
 
+    oneToMany:
+        reportings:
+            targetEntity: BlogBundle\Entity\ReportingComment
+            mappedBy: comment
+            orphanRemoval: true
+            cascade: [ remove ]
+
     lifecycleCallbacks:
         prePersist: [setCreatedAtInitialValue, setModifedAtInitialValue]
         preFlush: [setModifedAtInitialValue]

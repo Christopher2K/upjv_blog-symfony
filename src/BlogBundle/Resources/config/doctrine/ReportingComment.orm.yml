@@ -14,5 +14,7 @@ BlogBundle\Entity\ReportingComment:
             targetEntity: BlogBundle\Entity\User
         comment:
             targetEntity: BlogBundle\Entity\Comment
+            inversedBy: reportings
+
 
     lifecycleCallbacks: {  }

@@ -54,18 +54,21 @@ article_add3:
     path:     /articles/add3
     defaults: { _controller: BlogBundle:Articles:add3 }
 
-article_signaler:
-    path: /articles/signaler/{id}
-    defaults: { _controller: BlogBundle:Articles:signaler }
+article_report:
+    path: /articles/report/{id}
+    defaults: { _controller: BlogBundle:Articles:report }
 
 article_read:
     path: /articles/read/{id}
     defaults: { _controller: BlogBundle:Articles:read }
 
-article_deread:
+article_unread:
     path: /articles/deread/{id}
-    defaults: { _controller: BlogBundle:Articles:deread }
+    defaults: { _controller: BlogBundle:Articles:unread }
 
+# ################## #
+# COMMENTS RELATIVES #
+# ################## #
 comment_add:
     path:     /comments/add/{articleId}
     requirements:
@@ -86,6 +89,10 @@ comment_delete:
         commentId: '\d+'
     defaults: { _controller: BlogBundle:Comment:delete }
 
+comment_list:
+    path: /comments
+    defaults: { _controller: BlogBundle:Comment:list }
+
 comment_signaler:
     path: /comment/signaler/{id}
     defaults: { _controller: BlogBundle:Comment:signalerComment }
@@ -94,7 +101,9 @@ article_list_by_author:
   path: /articles/perso/
   defaults: { _controller: BlogBundle:Articles:listByAuthor }
 
-# ADMIN RELATIVES
+# ####################### #
+# ADMINISTRATOR RELATIVES #
+# ####################### #
 admin_user_list:
   path: /admin/users
   defaults: { _controller: BlogBundle:Users:list }
@@ -158,8 +167,31 @@ deleteReportComment_listPerso :
   defaults: { _controller: BlogBundle:ReportingArticle:delete }
 
 # THEME RELATIVES
-choose_theme:
-    path:     /chooseTheme
-    defaults: { _controller: BlogBundle:Themes:chooseTheme }
+theme_list_read:
+    path: /themes/read
+    defaults: { _controller: BlogBundle:Themes:listRead }
+
+theme_list_review:
+    path: /themes/review
+    defaults: { _controller: BlogBundle:Themes:listReview }
+
+theme_delete_read:
+    path: /themes/read/delete/{themeId}
+    requirements:
+        themeId: '\d+'
+    defaults: { _controller: BlogBundle:Themes:deleteRead }
+
+theme_delete_review:
+    path: /themes/review/delete/{themeId}
+    requirements:
+        themeId: '\d+'
+    defaults: { _controller: BlogBundle:Themes:deleteReview }
+
+
+
+
+#choose_theme:
+#    path:     /chooseTheme
+#    defaults: { _controller: BlogBundle:Themes:chooseTheme }
 
 

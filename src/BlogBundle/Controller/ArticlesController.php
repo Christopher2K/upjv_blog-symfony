@@ -4,7 +4,6 @@ namespace BlogBundle\Controller;
 
 use BlogBundle\Entity\Comment;
 use BlogBundle\Form\CommentType;
-use BlogBundle\Form\SearchType;
 use BlogBundle\Entity\Article;
 use BlogBundle\Entity\ReportingArticle;
 use BlogBundle\Form\ArticleType;
@@ -43,8 +42,8 @@ class ArticlesController extends Controller
 
         $article = $articleRepository->find($id);
         $comments = $commentRepository->findAllByArticleWithOrder($article);
-        $moyenne=0;
-        if (sizeof($comments)>0) {
+        $moyenne = 0;
+        if (sizeof($comments) > 0) {
             foreach ($comments as $comment) {
                 $moyenne += $comment->getNote();
             }
@@ -58,7 +57,7 @@ class ArticlesController extends Controller
             ->setAuthor($user)
             ->setNote(0);
 
-        $modifyCommentsForms = array_map(function (Comment $comment) {
+        $formsModifyComment = array_map(function (Comment $comment) {
             return $this->createForm(CommentType::class, $comment, [
                 'action' => $this->generateUrl('comment_modify', ['commentId' => $comment->getId()])
             ])->createView();
@@ -82,7 +81,7 @@ class ArticlesController extends Controller
             'comments' => $comments,
             'form_comment' => $formComment->createView(),
             'moyenne' => $moyenne,
-            'forms_modify_comment' => $modifyCommentsForms
+            'forms_modify_comment' => $formsModifyComment
         ]);
     }
 
@@ -127,11 +126,11 @@ class ArticlesController extends Controller
     {
         $entityManager = $this->getDoctrine()->getManager();
         if (!$article = $entityManager->getRepository('BlogBundle:Article')->find($id))
-            throw $this->createNotFoundException('L article[id='.$id.'] inexistant');
-        $form = $this->createForm(ArticleType::class, $article, array('action'=>$this->generateUrl('article_edit_suite',
-            array('id'=>$article->getId()))));
-        $form->add('submit', SubmitType::class, array('label'=>'Modifier'));
-        return $this->render('BlogBundle:Articles:modifier.html.twig', array('myForm'=>$form->createView(), 'article'=>$article));
+            throw $this->createNotFoundException('L article[id=' . $id . '] inexistant');
+        $form = $this->createForm(ArticleType::class, $article, array('action' => $this->generateUrl('article_edit_suite',
+            array('id' => $article->getId()))));
+        $form->add('submit', SubmitType::class, array('label' => 'Modifier'));
+        return $this->render('BlogBundle:Articles:modifier.html.twig', array('myForm' => $form->createView(), 'article' => $article));
     }
 
     /**
@@ -144,75 +143,91 @@ class ArticlesController extends Controller
     {
         $entityManager = $this->getDoctrine()->getManager();
         if (!$article = $entityManager->getRepository('BlogBundle:Article')->find($id))
-            throw $this->createNotFoundException('L article[id='.$id.'] inexistant');
-        $form = $this->createForm(ArticleType::class, $article, array('action'=>$this->generateUrl('article_edit_suite',
-            array('id'=>$article->getId()))));
-        $form->add('submit',SubmitType::class, array('label'=>'Modifier'));
+            throw $this->createNotFoundException('L article[id=' . $id . '] inexistant');
+        $form = $this->createForm(ArticleType::class, $article, array('action' => $this->generateUrl('article_edit_suite',
+            array('id' => $article->getId()))));
+        $form->add('submit', SubmitType::class, array('label' => 'Modifier'));
         $form->handleRequest($request);
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
             $entityManager->flush();
-            $url = $this->generateUrl('article_show', array('id'=>$article->getId()));
+            $url = $this->generateUrl('article_show', array('id' => $article->getId()));
             return $this->redirect($url);
         }
-        return $this->render('BlogBundle:Articles:modifier.html.twig', array('myForm'=>$form->createView(), 'article'=>$article));
+        return $this->render('BlogBundle:Articles:modifier.html.twig', array('myForm' => $form->createView(), 'article' => $article));
     }
 
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function deleteAction($id)
     {
         $em = $this->getDoctrine()->getManager();
         $articleRepository = $this->getDoctrine()->getRepository('BlogBundle:Article');
         $article = $articleRepository->find($id);
-        if($article != null){
 
-            $em->persist($article);
+        if ($article != null) {
             $em->remove($article);
             $em->flush();
-            $url = $this->generateUrl('article_list');
-            return $this->redirect($url);
         }
-        $url=$this->generateUrl('article_list');
-        return $this->redirect($url);
-    }
 
-    public function signalerAction($id)
-    {
-        $signalement = new ReportingArticle;
-        $article = new article;
-        $em = $this->getDoctrine()->getManager();
-        $article = $em->getRepository('BlogBundle:Article')->find($id);
-        $signalement->setArticle($article);
-        $signalement->setUser($this->getUser());
-        $em->persist($signalement);
-        $em->flush();
         $url = $this->generateUrl('article_list');
         return $this->redirect($url);
     }
 
-    public function readAction($id) {
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function reportAction($id)
+    {
+        $reporting = new ReportingArticle();
+        $em = $this->getDoctrine()->getManager();
+        $article = $em->getRepository('BlogBundle:Article')->find($id);
+        $reporting->setArticle($article);
+        $reporting->setUser($this->getUser());
+        $em->persist($reporting);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('article_list'));
+    }
+
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function readAction($id)
+    {
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
         $article = $em->getRepository('BlogBundle:Article')->find($id);
         $user->addReadArticle($article);
-        $em->persist($user);
         $em->flush();
-        $url = $this->generateUrl('article_show', ['id'=>$id]);
-        return $this->redirect($url);
+
+        return $this->redirect($this->generateUrl('article_show', ['id' => $id]));
     }
 
-    public function dereadAction($id) {
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function unreadAction($id)
+    {
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
         $article = $em->getRepository('BlogBundle:Article')->find($id);
         $user->removeReadArticle($article);
         $em->persist($user);
         $em->flush();
-        $url = $this->generateUrl('article_show', ['id'=>$id]);
+        $url = $this->generateUrl('article_show', ['id' => $id]);
         return $this->redirect($url);
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function listByAuthorAction()
     {
         $articleRepository = $this->getDoctrine()->getRepository('BlogBundle:Article');

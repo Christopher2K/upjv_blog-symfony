@@ -134,6 +134,34 @@ class CommentController extends Controller
         return $this->redirect($referer);
     }
 
+    public function listAction(Request $request)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_REVIEWER')) {
+            $user = $this->get('security.token_storage')->getToken()->getUser();
+
+            $commentsRepository = $this->getDoctrine()->getRepository('BlogBundle:Comment');
+            $comments = $commentsRepository->findByAuthor($user);
+
+            $formsModifyComment = array_map(function (Comment $comment) {
+                return $this->createForm(CommentType::class, $comment, [
+                    'action' => $this->generateUrl('comment_modify', [
+                        'commentId' => $comment->getId()
+                    ])
+                ])->createView();
+            }, $comments);
+
+            return $this->render('BlogBundle:Comments:list.html.twig', [
+                'comments' => $comments,
+                'forms_modify_comment' => $formsModifyComment
+            ]);
+        } else {
+            $this->addFlash('error', 'Vous n\'avez pas les droits pour consulter cette page.');
+        }
+
+        $referer = $request->headers->get('referer');
+        return $this->redirect($referer);
+    }
+
     public function signalerCommentAction($id)
     {
         $signalement = new ReportingComment;

@@ -216,4 +216,50 @@ class Comment
     {
         return $this->modifiedAt;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $reportings;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->reportings = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add reporting
+     *
+     * @param \BlogBundle\Entity\ReportingComment $reporting
+     *
+     * @return Comment
+     */
+    public function addReporting(\BlogBundle\Entity\ReportingComment $reporting)
+    {
+        $this->reportings[] = $reporting;
+
+        return $this;
+    }
+
+    /**
+     * Remove reporting
+     *
+     * @param \BlogBundle\Entity\ReportingComment $reporting
+     */
+    public function removeReporting(\BlogBundle\Entity\ReportingComment $reporting)
+    {
+        $this->reportings->removeElement($reporting);
+    }
+
+    /**
+     * Get reportings
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReportings()
+    {
+        return $this->reportings;
+    }
 }
