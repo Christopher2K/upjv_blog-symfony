@@ -15,8 +15,10 @@
 
         <div class="row">
             <h4>Signalements des articles</h4>Trier par :
+            {% if is_granted('ROLE_ADMIN') %}
             <a href="{{ path('admin_reportings_list2', { 'param': "Author"}) }}">Auteurs</a>
             - <a href="{{ path('admin_reportings_list2', { 'param': "Article"}) }}">Articles</a>
+            {% endif %}
             <ul>
                 {% for report in reports_article %}
                     <ul class="col-md-12 col-xs-12">
@@ -43,7 +45,9 @@
             <br/>
             <br/>
             <h4> Signalements des commentaires </h4>
+            {% if is_granted('ROLE_ADMIN') %}
             Trier par : <a href="{{ path('admin_reportings_list2', { 'param': "Reviewer"}) }}">Critiques</a>
+            {% endif %}
             <ul>
                 {% for report in reports_comment %}
                     <ul class="col-md-12 col-xs-12">

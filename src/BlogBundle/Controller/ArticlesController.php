@@ -250,12 +250,16 @@ class ArticlesController extends Controller
                 }
                 $length += sizeof($article->getComments());
             }
-            $moyenne = $moyenne / $length;
+            if ($length>0)
+            {
+                $moyenne = $moyenne / $length;
+            }else
+            {
+                $moyenne=-1;
+            }
+
         }
-        if ($length==0)
-        {
-            $moyenne=-1;
-        }
+
         return $this->render('BlogBundle:Articles:listByAuthor.html.twig', [
             'articles' => $articles,
             'moyenne' => $moyenne
