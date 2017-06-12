@@ -169,8 +169,13 @@ admin_theme_delete:
 
 # ADMIN & REPORTING
 admin_reportings_list:
-    path: /admin/reports
+    path: /admin/reports/
     defaults: { _controller: BlogBundle:Reportings:list }
+
+admin_reportings_list2:
+    path: /admin/reports/{param}
+    defaults: { _controller: BlogBundle:Reportings:list }
+
 
 # REPORTING ARTICLE RELATIVES
 reporting_self_list:

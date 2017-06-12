@@ -14,7 +14,9 @@
         </div>
 
         <div class="row">
-            <h4>Signalements des articles</h4>
+            <h4>Signalements des articles</h4>Trier par :
+            <a href="{{ path('admin_reportings_list2', { 'param': "Author"}) }}">Auteurs</a>
+            - <a href="{{ path('admin_reportings_list2', { 'param': "Article"}) }}">Articles</a>
             <ul>
                 {% for report in reports_article %}
                     <ul class="col-md-12 col-xs-12">
@@ -41,6 +43,7 @@
             <br/>
             <br/>
             <h4> Signalements des commentaires </h4>
+            Trier par : <a href="{{ path('admin_reportings_list2', { 'param': "Reviewer"}) }}">Critiques</a>
             <ul>
                 {% for report in reports_comment %}
                     <ul class="col-md-12 col-xs-12">
@@ -55,6 +58,11 @@
                            title="Supprimer le signalement">
                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                         </a>
+                            - <a href="{{ path('comment_delete', { 'commentId': report.comment.id}) }}">Supprimer le commentaire</a>
+                        - <a href="{{ path('admin_user_delete', {'id': report.comment.author.id }) }}">Supprimer
+                                l'auteur du commentaire</a>
+                        - <a href="{{ path('admin_user_delete', {'id': report.user.id}) }}">Supprimer l'auteur du
+                                signalement</a>
                         </li>
                     </ul>
                 {% endfor %}

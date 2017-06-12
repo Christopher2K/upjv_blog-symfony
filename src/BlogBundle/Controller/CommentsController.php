@@ -112,11 +112,9 @@ class CommentsController extends Controller
             ->getRepository('BlogBundle:Comment')
             ->find($commentId);
 
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_REVIEWER') &&
-            $comment->getAuthor()->getId() === $user->getId()
-        ) {
-
-
+        if ((($this->get('security.authorization_checker')->isGranted('ROLE_REVIEWER') &&
+            $comment->getAuthor()->getId() === $user->getId()) || $this->isGranted('ROLE_ADMIN')))
+        {
             $manager = $this->getDoctrine()->getManager();
 
             if ($comment !== null) {

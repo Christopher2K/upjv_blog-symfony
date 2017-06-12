@@ -40,6 +40,6 @@ security:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/articles/delete, roles: [ROLE_ADMIN, ROLE_WRITER] }
         - { path: ^/articles/(add|edit), roles: ROLE_WRITER }
-        - { path: ^/articles/, roles: [ROLE_READER, ROLE_WRITER] }
+        - { path: ^/articles/, roles: [ROLE_READER, ROLE_WRITER, ROLE_ADMIN] }
         - { path: ^/themes/read, roles: ROLE_READER }
         - { path: ^/themes/review, roles: ROLE_REVIEWER }

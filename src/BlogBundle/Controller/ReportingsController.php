@@ -9,6 +9,7 @@
 namespace BlogBundle\Controller;
 
 use BlogBundle\Entity\ReportingArticle;
+use BlogBundle\Entity\ReportingComment;
 use BlogBundle\Entity\User;
 use BlogBundle\Form\UserType;
 use Doctrine\Common\Annotations\Annotation\Required;
@@ -21,14 +22,49 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ReportingsController extends Controller
 {
-    public function listAction()
+    public function listAction($param="")
     {
         $reportArticleRepository = $this->getDoctrine()->getRepository('BlogBundle:ReportingArticle');
         $reportsArticle = $reportArticleRepository->findAll();
         $reportCommentRepository = $this->getDoctrine()->getRepository('BlogBundle:ReportingComment');
         $reportsComment = $reportCommentRepository->findAll();
 
+        if (is_string($param))
+        {
+            if($param==='Author')
+            {
+                usort($reportsArticle,function (ReportingArticle $a, ReportingArticle $b)
+                {
+                    $al=$a->getUser()->getUsername();
+                    $bl=$b->getUser()->getUsername();
+                    if($al==$bl) return 0;
+                    return ($al > $bl) ? +1 : -1;
 
+                });
+            }
+            elseif ($param==='Reviewer')
+            {
+                usort($reportsArticle,function (ReportingComment $a, ReportingComment $b)
+                {
+                    $al=$a->getUser()->getUsername();
+                    $bl=$b->getUser()->getUsername();
+                    if($al==$bl) return 0;
+                    return ($al > $bl) ? +1 : -1;
+
+                });
+            }
+            elseif ($param==='Article')
+            {
+                usort($reportsArticle,function (ReportingArticle $a, ReportingArticle $b)
+                {
+                    $al=$a->getArticle()->getTitle();
+                    $bl=$b->getArticle()->getTitle();
+                    if($al==$bl) return 0;
+                    return ($al > $bl) ? +1 : -1;
+
+                });
+            }
+        }
         return $this->render('BlogBundle:Reportings:list.html.twig', [
             'reports_article' => $reportsArticle,
             'reports_comment' => $reportsComment
