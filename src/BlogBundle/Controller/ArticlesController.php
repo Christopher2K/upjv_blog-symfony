@@ -261,4 +261,15 @@ class ArticlesController extends Controller
             'moyenne' => $moyenne
         ]);
     }
+
+    public function searchAction(Request $request) {
+        $searchParam = $request->query->get('s');
+        $articleRepository = $this->getDoctrine()->getRepository('BlogBundle:Article');
+        $articles = $articleRepository->findByAuthorOrTitle($searchParam);
+
+        return $this->render('BlogBundle:Articles:search.html.twig', [
+            'search_param' => $searchParam,
+            'articles' => $articles
+        ]);
+    }
 }

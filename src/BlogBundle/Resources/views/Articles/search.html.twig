@@ -1,0 +1,32 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Blog - Liste des articles{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <h1>Recherche d'articles</h1>
+            <p>Résultat de la recherche pour <em>{{ search_param }}</em></p>
+        </div>
+
+        <div class="row">
+            {% for article in articles %}
+                <div class="col-md-5 col-md-offset-1 col-xs-12">
+                    <a href="{{ path('article_show', { 'id': article.id }) }}"><h3>{{ article.title }}</h3></a>
+                    <div>
+                        {% for theme in article.themes %}
+                            <span class="label label-default">{{ theme }}</span>
+                        {% endfor %}
+                    </div>
+                    <p>par <strong>{{ article.author }}</strong></p>
+                    <p><em>{{ article.content | slice(0, 200) }}...</em></p>
+                    <a href="{{ path('article_show', { 'id': article.id }) }}">Lire la suite</a>
+                </div>
+            {% endfor %}
+
+            {% if articles|length == 0 %}
+                <div class="col-md-12">Pas de résultats !</div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

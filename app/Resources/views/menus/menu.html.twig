@@ -21,7 +21,8 @@
 
                 {% if is_granted('ROLE_REVIEWER') %}
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
                             Critique <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
@@ -34,7 +35,8 @@
 
                 {% if is_granted('ROLE_WRITER') %}
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
                             Auteur <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
@@ -46,7 +48,8 @@
 
                 {% if is_granted('ROLE_ADMIN') %}
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
                             Administration <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
@@ -61,13 +64,17 @@
                     </li>
                 {% endif %}
             </ul>
+
+            {% if is_granted('ROLE_READER') %}
+                <form class="navbar-form navbar-left" method="get" action="{{ path('article_search') }}" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="s" placeholder="Recherche">
+                    </div>
+                    <button type="submit" class="btn btn-default">Go</button>
+                </form>
+            {% endif %}
+
             <ul class="nav navbar-nav navbar-right">
-                {% if is_granted('ROLE_READER') %}
-                    <form>
-                        <input name="q" type="search">
-                        <input type="submit" value="Rechercher">
-                    </form>
-                {% endif %}
                 <li><a href="{{ path('logout') }}">Deconnexion</a></li>
             </ul>
         </div>

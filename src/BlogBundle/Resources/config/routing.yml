@@ -20,6 +20,10 @@ logout:
 # ################## #
 # ARTICLES RELATIVES #
 # ################## #
+article_search:
+    path: /articles/search
+    defaults: { _controller: BlogBundle:Articles:search }
+
 article_list:
     path:     /articles
     defaults: { _controller: BlogBundle:Articles:list }
@@ -184,15 +188,3 @@ reporting_article_delete:
     requirements:
         id: '\d+'
     defaults: { _controller: BlogBundle:Reportings:deleteReportArticle }
-
-
-
-
-reporting_article_show:
-    path: /report/articles/{id}
-    defaults: { _controller: BlogBundle:ReportingArticle:delete }
-
-reporting_comments_show:
-    path: /report/articles/{id}
-    defaults: { _controller: BlogBundle:ReportingArticle:delete }
-

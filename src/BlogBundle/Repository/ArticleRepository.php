@@ -10,4 +10,11 @@ namespace BlogBundle\Repository;
  */
 class ArticleRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByAuthorOrTitle($param)
+    {
+        $query = $this->getEntityManager()
+            ->createQuery("SELECT a FROM BlogBundle:Article a, BlogBundle:User u WHERE a.title LIKE '%" . $param . "%' OR u.username LIKE '%" . $param . "%'");
+
+        return $query->getResult();
+    }
 }
