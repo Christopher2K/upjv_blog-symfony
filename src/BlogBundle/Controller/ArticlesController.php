@@ -174,6 +174,7 @@ class ArticlesController extends Controller
         $article = $articleRepository->find($id);
 
         if ($article != null) {
+            if($this->isGranted('ROLE_ADMIN')||($article->getAuthor()==$this->getUser()))
             $em->remove($article);
             $em->flush();
         }
