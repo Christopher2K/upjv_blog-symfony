@@ -31,104 +31,81 @@ class ReportingsController extends Controller
 
         return $this->render('BlogBundle:Reportings:list.html.twig', [
             'reports_article' => $reportsArticle,
-            'reports_comment' =>$reportsComment
-        ]);
-    }
-
-    /**
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function listPersoAction()
-    {
-        $reportRepository = $this->getDoctrine()->getRepository('BlogBundle:ReportingArticle');
-        $reports = $reportRepository->findAll();
-        $reportRepository2 = $this->getDoctrine()->getRepository('BlogBundle:ReportingComment');
-        $reports2 = $reportRepository2->findAll();
-
-        return $this->render('BlogBundle:Reportings:list.html.twig', [
-            'reports' => $reports,
-            'reports2' => $reports2,
+            'reports_comment' => $reportsComment
         ]);
     }
 
     /**
      * @param $id
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction($id)
+    public function deleteReportCommentAction($id, Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $userRepository = $this->getDoctrine()->getRepository('BlogBundle:ReportingArticle');
-        $report = $userRepository->find($id);
-        $userRepository2 = $this->getDoctrine()->getRepository('BlogBundle:ReportingComment');
-        $report2 = $userRepository2->find($id);
+        $referer = $request->headers->get('referer');
 
-        if ($report != null) {
-            $em->persist($report);
-            $em->remove($report);
-            $em->flush();
+        if ($this->isGranted('ROLE_ADMIN') or $this->isGranted('ROLE_READER')) {
+            $reportingCommentsRepository = $this
+                ->getDoctrine()
+                ->getRepository('BlogBundle:ReportingComment');
+
+            $reporting = $reportingCommentsRepository->find($id);
+
+            if ($this->isGranted('ROLE_READER') and $this->getUser() != $reporting->getUser()) {
+                return $this->redirect($referer);
+            }
+
+            if ($reporting != null) {
+                $this->getDoctrine()->getManager()->remove($reporting);
+                $this->getDoctrine()->getManager()->flush();
+            }
         }
 
-        if ($report2 != null) {
-            $em->persist($report2);
-            $em->remove($report2);
-            $em->flush();
-        }
-
-        return $this->redirect($this->generateUrl('reporting_list'));
+        return $this->redirect($referer);
     }
 
-    public function deleteAdminAction($id)
+    /**
+     * @param $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteReportArticleAction($id, Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $userRepository = $this->getDoctrine()->getRepository('BlogBundle:ReportingArticle');
-        $report = $userRepository->find($id);
-        $userRepository2 = $this->getDoctrine()->getRepository('BlogBundle:ReportingComment');
-        $report2 = $userRepository2->find($id);
+        $referer = $request->headers->get('referer');
 
-        if ($report != null) {
-            $em->persist($report);
-            $em->remove($report);
-            $em->flush();
+        if ($this->isGranted('ROLE_ADMIN') or $this->isGranted('ROLE_READER')) {
+            $reportingArticleRepository = $this
+                ->getDoctrine()
+                ->getRepository('BlogBundle:ReportingArticle');
+
+            $reporting = $reportingArticleRepository->find($id);
+
+            if ($this->isGranted('ROLE_READER') and $this->getUser() != $reporting->getUser()) {
+                return $this->redirect($referer);
+            }
+
+            if ($reporting != null) {
+                $this->getDoctrine()->getManager()->remove($reporting);
+                $this->getDoctrine()->getManager()->flush();
+            }
         }
 
-        if ($report2 != null) {
-            $em->persist($report2);
-            $em->remove($report2);
-            $em->flush();
-        }
-
-        return $this->redirect($this->generateUrl('admin_reportings_list'));
+        return $this->redirect($referer);
     }
 
-    public function deleteArticleByReport($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $reportRepository = $this->getDoctrine()->getRepository('BlogBundle:ReportingArticle');
-        $report = $reportRepository->find($id);
-        if($report!=null)
-        {
-           $article = $report->getArticle();
-           $em->persist($article);
-           $em->delete($article);
-           $em-flush();
-        }
-        return $this->redirect($this->generateUrl('admin_reportings_list'));
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function selfListAction() {
+        $reportArticleRepository = $this->getDoctrine()->getRepository('BlogBundle:ReportingArticle');
+        $reportCommentRepository = $this->getDoctrine()->getRepository('BlogBundle:ReportingComment');
+
+        $reportsArticle = $reportArticleRepository->findByUser($this->getUser());
+        $reportsComment = $reportCommentRepository->findByUser($this->getUser());
+
+        return $this->render('BlogBundle:Reportings:list.html.twig', [
+            'reports_article' => $reportsArticle,
+            'reports_comment' => $reportsComment,
+        ]);
     }
-    //    public function testAction()
-//    {
-//        $report = new ReportingArticle();
-//        $report2 = new ReportingArticle();
-//        $entityManager = $this->getDoctrine()->getManager();
-//        $user=$entityManager->getRepository('BlogBundle:User')->find(2);
-//        $art1 = $entityManager->getRepository('BlogBundle:Article')->find(3);
-//        $art2 = $entityManager->getRepository('BlogBundle:Article')->find(2);
-//        $report->setArticle($art1);
-//        $report->setUser($user);
-//        $entityManager->persist($report);
-//        $report2->setArticle($art2);
-//        $report2->setUser($user);
-//        $entityManager->persist($report2);
-//        $entityManager->flush();
-//    }
 }

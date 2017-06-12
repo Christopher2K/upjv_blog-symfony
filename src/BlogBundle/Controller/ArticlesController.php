@@ -164,9 +164,10 @@ class ArticlesController extends Controller
 
     /**
      * @param $id
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction($id)
+    public function deleteAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $articleRepository = $this->getDoctrine()->getRepository('BlogBundle:Article');
@@ -177,7 +178,12 @@ class ArticlesController extends Controller
             $em->flush();
         }
 
-        $url = $this->generateUrl('article_list');
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $url = $request->headers->get('referer');
+        } else {
+            $url = $this->generateUrl('article_list');
+        }
+
         return $this->redirect($url);
     }
 
