@@ -100,6 +100,21 @@ class ReportingArticleController extends Controller
 
         return $this->redirect($this->generateUrl('admin_reporting_article_list'));
     }
+
+    public function deleteArticleByReport($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $reportRepository = $this->getDoctrine()->getRepository('BlogBundle:ReportingArticle');
+        $report = $reportRepository->find($id);
+        if($report!=null)
+        {
+           $article = $report->getArticle();
+           $em->persist($article);
+           $em->delete($article);
+           $em-flush();
+        }
+        return $this->redirect($this->generateUrl('admin_reporting_article_list'));
+    }
     //    public function testAction()
 //    {
 //        $report = new ReportingArticle();
