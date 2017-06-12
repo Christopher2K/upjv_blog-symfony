@@ -25,9 +25,13 @@ class ReportingArticleController extends Controller
     {
         $reportRepository = $this->getDoctrine()->getRepository('BlogBundle:ReportingArticle');
         $reports = $reportRepository->findAll();
+        $reportRepository2 = $this->getDoctrine()->getRepository('BlogBundle:ReportingComment');
+        $reports2 = $reportRepository2->findAll();
+
 
         return $this->render('BlogBundle:ReportingArticles:list.html.twig', [
-            'reports' => $reports
+            'reports' => $reports,
+            'reports2'=>$reports2
         ]);
     }
 
@@ -41,7 +45,7 @@ class ReportingArticleController extends Controller
         $reportRepository2 = $this->getDoctrine()->getRepository('BlogBundle:ReportingComment');
         $reports2 = $reportRepository2->findAll();
 
-        return $this->render('BlogBundle:ReportingArticles:listperso.html.twig', [
+        return $this->render('BlogBundle:ReportingArticles:list.html.twig', [
             'reports' => $reports,
             'reports2' => $reports2,
         ]);
@@ -74,6 +78,28 @@ class ReportingArticleController extends Controller
         return $this->redirect($this->generateUrl('reporting_list'));
     }
 
+    public function deleteAdminAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $userRepository = $this->getDoctrine()->getRepository('BlogBundle:ReportingArticle');
+        $report = $userRepository->find($id);
+        $userRepository2 = $this->getDoctrine()->getRepository('BlogBundle:ReportingComment');
+        $report2 = $userRepository2->find($id);
+
+        if ($report != null) {
+            $em->persist($report);
+            $em->remove($report);
+            $em->flush();
+        }
+
+        if ($report2 != null) {
+            $em->persist($report2);
+            $em->remove($report2);
+            $em->flush();
+        }
+
+        return $this->redirect($this->generateUrl('admin_reporting_article_list'));
+    }
     //    public function testAction()
 //    {
 //        $report = new ReportingArticle();

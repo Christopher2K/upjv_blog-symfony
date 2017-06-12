@@ -13,12 +13,12 @@
             {% for theme in article.themes %}
                 <span class="label label-default">{{ theme }} </span> &nbsp;
             {% endfor %}
-            {% if article.getAuthor == app.user %}
+            {% if article.getAuthor == app.user and moyenne != -1 %}
                 Moyenne des notes {{ moyenne }}/10
             {% endif %}
             <br>Créé par <b>{{ article.getAuthor }} </b> le {{ article.createdAt|date("d/m/Y") }}
             à {{ article.createdAt|date("H:i") }}
-            {% if 'ROLE_READER' or 'ROLE_REVIEWER' in app.user.roles %}
+            {% if 'ROLE_READER' in app.user.roles or 'ROLE_REVIEWER' in app.user.roles %}
                 <a href="{{ path('article_report', { 'id': article.id}) }}">Signaler</a>
 
                 {% if app.user not in article.readBy %}
@@ -28,7 +28,12 @@
                     <a href="{{ path('article_unread', { 'id': article.id }) }}"><span style="background-color:orange;"
                                                                                        class="label label-default">Article déjà lu</span></a>
                 {% endif %}
-
+            {% endif %}
+            {% if app.user == article.getAuthor %}
+            <a href="{{ path('article_delete', { 'id': article.id }) }}"><span style="background-color:#25BF72;"
+                                                                               class="label label-danger">Supprimer l'article</span></a>
+            <a href="{{ path('article_edit', { 'id': article.id }) }}"><span style="background-color:#25BF72;"
+                                                                             class="label label-primary">Modifier l'article</span></a>
             {% endif %}
             <h1 class="col-xs-12">{{ article.title }}</h1>
 
@@ -78,7 +83,7 @@
             <h3 class="col-xs-12">
                 {% if 'ROLE_REVIEWER' in app.user.roles %}
                     Vos réactions
-                {% elseif  'ROLE_READER' or 'ROLE_WRITER' in app.user.roles %}
+                {% elseif  'ROLE_READER' in app.user.roles or 'ROLE_WRITER' in app.user.roles %}
                     Précédentes réactions...
                 {% endif %}
             </h3>

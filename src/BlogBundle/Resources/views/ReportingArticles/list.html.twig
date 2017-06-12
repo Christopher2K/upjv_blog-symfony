@@ -1,6 +1,6 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}Blog - Liste des signalements d'articles{% endblock %}
+{% block title %}Blog - Liste des signalements{% endblock %}
 
 {% block body %}
     <div class="container">
@@ -9,6 +9,7 @@
             <p>La liste des signalements du blog !</p>
         </div>
         <div class="row">
+            <h4> Signalements des articles </h4>
             <ul>
             {% for article in reports %}
                 {% if article.Article is not null %}
@@ -16,10 +17,28 @@
                  <li>
                      <a href="{{ path('article_show', { 'id': article.Article.id}) }}"> {{ article.Article.title }} </a>
                      signalé par <b>{{ article.User.Username }}</b>
+                     <a href="{{ path('admin_reporting_article_delete', { 'id': article.id}) }}" title="Supprimer le signalement"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
                  </li>
                 </div>
                 {% endif %}
             {% endfor %}
+            </ul>
+            <br><br>
+            <h4> Signalements des commentaires </h4>
+            <ul>
+                {% for comment in reports2 %}
+                    {% if comment.Comment is not null %}
+                        <div class="col-md-12 col-xs-12">
+                            <li>
+                                <i>&laquo;{{ comment.Comment.content }}&raquo;</i>
+                                (<a href="{{ path('article_show', { 'id': comment.Comment.Article.id}) }}"> {{ comment.Comment.Article.title }} </a>)
+                                signalé par <b>{{ comment.User.Username }}</b>
+
+                                <a href="{{ path('admin_reporting_article_delete', { 'id': comment.id}) }}" title="Supprimer le signalement"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                            </li>
+                        </div>
+                    {% endif %}
+                {% endfor %}
             </ul>
         </div>
     </div>

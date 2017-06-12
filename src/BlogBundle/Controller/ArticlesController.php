@@ -48,6 +48,8 @@ class ArticlesController extends Controller
                 $moyenne += $comment->getNote();
             }
             $moyenne = $moyenne / sizeof($comments);
+        }else{
+            $moyenne=-1;
         }
         // Form comment
         $user = $this->get('security.token_storage')->getToken()->getUser();
@@ -127,7 +129,7 @@ class ArticlesController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
         if (!$article = $entityManager->getRepository('BlogBundle:Article')->find($id))
             throw $this->createNotFoundException('L article[id=' . $id . '] inexistant');
-        $form = $this->createForm(ArticleType::class, $article, array('action' => $this->generateUrl('article_edit_suite',
+        $form = $this->createForm(ArticleType::class, $article, array('action' => $this->generateUrl('article_edit_next',
             array('id' => $article->getId()))));
         $form->add('submit', SubmitType::class, array('label' => 'Modifier'));
         return $this->render('BlogBundle:Articles:edit.html.twig', array('myForm' => $form->createView(), 'article' => $article));
@@ -193,7 +195,7 @@ class ArticlesController extends Controller
         $em->persist($reporting);
         $em->flush();
 
-        return $this->redirect($this->generateUrl('article_list'));
+        return $this->redirect($this->generateUrl('article_show',['id'=>$id]));
     }
 
     /**
@@ -243,6 +245,10 @@ class ArticlesController extends Controller
                 $length += sizeof($article->getComments());
             }
             $moyenne = $moyenne / $length;
+        }
+        if ($length==0)
+        {
+            $moyenne=-1;
         }
         return $this->render('BlogBundle:Articles:listByAuthor.html.twig', [
             'articles' => $articles,

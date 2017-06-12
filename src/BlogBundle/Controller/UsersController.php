@@ -81,7 +81,7 @@ class UsersController extends Controller
     public function addAction(Request $request)
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user, array('action' => $this->generateUrl(('admin_user_ajouter'))));
+        $form = $this->createForm(UserType::class, $user, array('action' => $this->generateUrl(('admin_user_add'))));
         $form->add('submit', SubmitType::class, array('label' => 'Ajouter'));
         $form->handleRequest($request);
 

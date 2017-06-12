@@ -14,7 +14,9 @@
                 {% for theme in themes %}
                     <div class="col-md-12 col-xs-12">
                         <li>   {{ theme.title}}
+                            {% if theme.getArticles is empty %}
                             <a href="{{ path('admin_theme_delete', { 'id': theme.id })}}" title="Supprimer le thème"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                            {% endif %}
                         </li>
                     </div>
                 {% endfor %}

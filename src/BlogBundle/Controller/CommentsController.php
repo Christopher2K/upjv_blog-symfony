@@ -172,7 +172,7 @@ class CommentsController extends Controller
         $signalement->setUser($this->getUser());
         $em->persist($signalement);
         $em->flush();
-        $url = $this->generateUrl('article_list');
+        $url = $this->generateUrl('article_show',['id'=>$comment->getArticle()->getId()]);
         return $this->redirect($url);
     }
 

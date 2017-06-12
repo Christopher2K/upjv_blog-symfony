@@ -6,7 +6,10 @@
     <div class="container">
         <div class="row">
             <h1>Articles</h1>
+            {% if moyenne != -1 %}
             <p>La liste de mes articles - Moyenne : {{ moyenne }}/10</p>
+            {% endif %}
+            <p><a href="{{path('article_add') }}">Rédiger un article</a></p>
         </div>
         <div class="row">
             {% for article in articles %}
