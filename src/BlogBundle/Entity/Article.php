@@ -314,4 +314,43 @@ class Article
     {
         $this->updatedAt = new \DateTime('now');
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $reportings;
+
+
+    /**
+     * Add reporting
+     *
+     * @param \BlogBundle\Entity\ReportingArticle $reporting
+     *
+     * @return Article
+     */
+    public function addReporting(\BlogBundle\Entity\ReportingArticle $reporting)
+    {
+        $this->reportings[] = $reporting;
+
+        return $this;
+    }
+
+    /**
+     * Remove reporting
+     *
+     * @param \BlogBundle\Entity\ReportingArticle $reporting
+     */
+    public function removeReporting(\BlogBundle\Entity\ReportingArticle $reporting)
+    {
+        $this->reportings->removeElement($reporting);
+    }
+
+    /**
+     * Get reportings
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReportings()
+    {
+        return $this->reportings;
+    }
 }

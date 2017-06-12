@@ -23,6 +23,7 @@ BlogBundle\Entity\Comment:
     manyToOne:
         author:
             targetEntity: BlogBundle\Entity\User
+            inversedBy: comments
 
         article:
             targetEntity: BlogBundle\Entity\Article

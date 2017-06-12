@@ -144,7 +144,7 @@ class CommentsController extends Controller
 
             $formsModifyComment = array_map(function (Comment $comment) {
                 return $this->createForm(CommentType::class, $comment, [
-                    'action' => $this->generateUrl('comment_modify', [
+                    'action' => $this->generateUrl('comment_edit', [
                         'commentId' => $comment->getId()
                     ])
                 ])->createView();

@@ -59,7 +59,7 @@ class ArticlesController extends Controller
 
         $formsModifyComment = array_map(function (Comment $comment) {
             return $this->createForm(CommentType::class, $comment, [
-                'action' => $this->generateUrl('comment_modify', ['commentId' => $comment->getId()])
+                'action' => $this->generateUrl('comment_edit', ['commentId' => $comment->getId()])
             ])->createView();
         }, $comments);
 
@@ -106,7 +106,7 @@ class ArticlesController extends Controller
             $url = $this->generateUrl('article_show', array('id' => $article->getId()));
             return $this->redirect($url);
         }
-        return $this->render('BlogBundle:Articles:add.html.twig', array('myForm' => $form->createView()));
+        return $this->render('BlogBundle:Articles:add.html.twig', array('article_form' => $form->createView()));
     }
 
     public function navigationAction()

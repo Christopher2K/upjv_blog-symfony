@@ -12,6 +12,7 @@ BlogBundle\Entity\ReportingComment:
     manyToOne:
         user:
             targetEntity: BlogBundle\Entity\User
+            inversedBy: reportingsComment
         comment:
             targetEntity: BlogBundle\Entity\Comment
             inversedBy: reportings

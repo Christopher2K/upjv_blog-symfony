@@ -98,7 +98,7 @@
                                     Posté le {{ comment.createdAt.format('Y-m-d H:i:s') }}
                                     <span style="float:right;">
                                 {% if ('ROLE_READER' in app.user.roles or article.author == app.user) and (comment.author != app.user) %}
-                                    <a href="{{ path('comment_signaler', { 'id': comment.id}) }}">Signaler</a>
+                                    <a href="{{ path('comment_add_report', { 'id': comment.id}) }}">Signaler</a>
                                 {% endif %}
                                 </span>
                                 </p>

@@ -30,12 +30,33 @@ BlogBundle\Entity\User:
         writenArticles:
             targetEntity: BlogBundle\Entity\Article
             mappedBy: author
+            orphanRemoval: true
+            cascade: [ remove ]
 
         themes:
             targetEntity: BlogBundle\Entity\UserTheme
             mappedBy: user
+            orphanRemoval: true
+            cascade: [ remove ]
 
+        comments:
+            targetEntity: BlogBundle\Entity\Comment
+            mappedBy: author
+            orphanRemoval: true
+            cascade: [ remove ]
 
+        reportingsArticle:
+            targetEntity: BlogBundle\Entity\ReportingArticle
+            mappedBy: user
+            orphanRemoval: true
+            cascade: [ remove ]
+            fetch: EXTRA_LAZY
 
+        reportingsComment:
+            targetEntity: BlogBundle\Entity\ReportingComment
+            mappedBy: user
+            orphanRemoval: true
+            cascade: [ remove ]
+            fetch: EXTRA_LAZY
 
     lifecycleCallbacks: {  }

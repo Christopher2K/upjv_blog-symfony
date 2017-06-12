@@ -31,7 +31,7 @@ class ThemesController extends Controller
     public function addAction(Request $request)
     {
         $theme = new Theme();
-        $form = $this->createForm(ThemeType::class, $theme, array('action' => $this->generateUrl(('admin_theme_ajouter'))));
+        $form = $this->createForm(ThemeType::class, $theme, array('action' => $this->generateUrl('admin_theme_add')));
         $form->add('submit', SubmitType::class, array('label' => 'Ajouter'));
         $form->handleRequest($request);
 

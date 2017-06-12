@@ -12,7 +12,9 @@ BlogBundle\Entity\ReportingArticle:
     manyToOne:
         user:
             targetEntity: BlogBundle\Entity\User
+            inversedBy: reportingsArticle
         article:
             targetEntity: BlogBundle\Entity\Article
+            inversedBy: reportings
 
     lifecycleCallbacks: {  }

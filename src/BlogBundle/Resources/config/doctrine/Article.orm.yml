@@ -39,6 +39,14 @@ BlogBundle\Entity\Article:
         comments:
             targetEntity: BlogBundle\Entity\Comment
             mappedBy: article
+            orphanRemoval: true
+            cascade: [ remove ]
+
+        reportings:
+            targetEntity: BlogBundle\Entity\ReportingArticle
+            mappedBy: article
+            orphanRemoval: true
+            cascade: [ remove ]
 
     lifecycleCallbacks:
         prePersist: [setCreatedAtInitialValue, setUpdatedAtValue]

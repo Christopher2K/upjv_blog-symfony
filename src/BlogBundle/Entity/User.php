@@ -274,4 +274,121 @@ class User implements UserInterface, \Serializable
     {
         return $this->username;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $reportingsArticle;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $reportingsComment;
+
+
+    /**
+     * Add reportingsArticle
+     *
+     * @param \BlogBundle\Entity\ReportingArticle $reportingsArticle
+     *
+     * @return User
+     */
+    public function addReportingsArticle(\BlogBundle\Entity\ReportingArticle $reportingsArticle)
+    {
+        $this->reportingsArticle[] = $reportingsArticle;
+
+        return $this;
+    }
+
+    /**
+     * Remove reportingsArticle
+     *
+     * @param \BlogBundle\Entity\ReportingArticle $reportingsArticle
+     */
+    public function removeReportingsArticle(\BlogBundle\Entity\ReportingArticle $reportingsArticle)
+    {
+        $this->reportingsArticle->removeElement($reportingsArticle);
+    }
+
+    /**
+     * Get reportingsArticle
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReportingsArticle()
+    {
+        return $this->reportingsArticle;
+    }
+
+    /**
+     * Add reportingsComment
+     *
+     * @param \BlogBundle\Entity\ReportingComment $reportingsComment
+     *
+     * @return User
+     */
+    public function addReportingsComment(\BlogBundle\Entity\ReportingComment $reportingsComment)
+    {
+        $this->reportingsComment[] = $reportingsComment;
+
+        return $this;
+    }
+
+    /**
+     * Remove reportingsComment
+     *
+     * @param \BlogBundle\Entity\ReportingComment $reportingsComment
+     */
+    public function removeReportingsComment(\BlogBundle\Entity\ReportingComment $reportingsComment)
+    {
+        $this->reportingsComment->removeElement($reportingsComment);
+    }
+
+    /**
+     * Get reportingsComment
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReportingsComment()
+    {
+        return $this->reportingsComment;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $comments;
+
+
+    /**
+     * Add comment
+     *
+     * @param \BlogBundle\Entity\Comment $comment
+     *
+     * @return User
+     */
+    public function addComment(\BlogBundle\Entity\Comment $comment)
+    {
+        $this->comments[] = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Remove comment
+     *
+     * @param \BlogBundle\Entity\Comment $comment
+     */
+    public function removeComment(\BlogBundle\Entity\Comment $comment)
+    {
+        $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
 }

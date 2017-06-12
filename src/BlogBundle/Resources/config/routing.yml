@@ -44,7 +44,7 @@ article_edit_next:
     path: /articles/edit/{id}/next
     requirements:
         id: \d{1,2}
-    method: POST
+    methods: POST
     defaults: { _controller: BlogBundle:Articles:editNext }
 
 article_delete:
