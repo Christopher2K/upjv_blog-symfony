@@ -134,6 +134,10 @@ class CommentsController extends Controller
         return $this->redirect($referer);
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function listAction(Request $request)
     {
         if ($this->get('security.authorization_checker')->isGranted('ROLE_REVIEWER')) {
@@ -162,16 +166,22 @@ class CommentsController extends Controller
         return $this->redirect($referer);
     }
 
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function reportAction($id)
     {
-        $signalement = new ReportingComment;
-        $comment = new comment;
         $em = $this->getDoctrine()->getManager();
+
+        $reporting = new ReportingComment();
         $comment = $em->getRepository('BlogBundle:Comment')->find($id);
-        $signalement->setComment($comment);
-        $signalement->setUser($this->getUser());
-        $em->persist($signalement);
+
+        $reporting->setComment($comment);
+        $reporting->setUser($this->getUser());
+        $em->persist($reporting);
         $em->flush();
+
         $url = $this->generateUrl('article_show',['id'=>$comment->getArticle()->getId()]);
         return $this->redirect($url);
     }

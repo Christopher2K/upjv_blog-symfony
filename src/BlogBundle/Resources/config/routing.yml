@@ -164,28 +164,24 @@ admin_theme_delete:
   defaults: { _controller: BlogBundle:Themes:delete }
 
 # ADMIN & REPORTING
-admin_reporting_article_list:
-  path: /admin/reporting/articles
-  defaults: { _controller: BlogBundle:ReportingArticle:list }
-
-admin_reporting_comment_list:
-  path: /admin/reporting/comment
-  defaults: { _controller: BlogBundle:ReportingComment:list }
+admin_reportings_list:
+    path: /admin/reporting
+    defaults: { _controller: BlogBundle:Reportings:list }
 
 admin_reporting_article_delete:
-  path: /admin/reporting/{id}
-  defaults: { _controller: BlogBundle:ReportingArticle:deleteAdmin }
+    path: /admin/reporting/{id}
+    defaults: { _controller: BlogBundle:ReportingArticle:deleteAdmin }
 
 # REPORTING ARTICLE RELATIVES
 reporting_list:
-  path: /reports
-  defaults: { _controller: BlogBundle:ReportingArticle:listPerso }
+    path: /reports
+    defaults: { _controller: BlogBundle:ReportingArticle:listPerso }
 
 reporting_article_show:
-  path: /report/articles/{id}
-  defaults: { _controller: BlogBundle:ReportingArticle:delete }
+    path: /report/articles/{id}
+    defaults: { _controller: BlogBundle:ReportingArticle:delete }
 
 reporting_comments_show:
-  path: /report/articles/{id}
-  defaults: { _controller: BlogBundle:ReportingArticle:delete }
+    path: /report/articles/{id}
+    defaults: { _controller: BlogBundle:ReportingArticle:delete }
 

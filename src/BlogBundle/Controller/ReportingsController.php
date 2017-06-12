@@ -19,19 +19,19 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
-class ReportingArticleController extends Controller
+class ReportingsController extends Controller
 {
     public function listAction()
     {
-        $reportRepository = $this->getDoctrine()->getRepository('BlogBundle:ReportingArticle');
-        $reports = $reportRepository->findAll();
-        $reportRepository2 = $this->getDoctrine()->getRepository('BlogBundle:ReportingComment');
-        $reports2 = $reportRepository2->findAll();
+        $reportArticleRepository = $this->getDoctrine()->getRepository('BlogBundle:ReportingArticle');
+        $reportsArticle = $reportArticleRepository->findAll();
+        $reportCommentRepository = $this->getDoctrine()->getRepository('BlogBundle:ReportingComment');
+        $reportsComment = $reportCommentRepository->findAll();
 
 
-        return $this->render('BlogBundle:ReportingArticles:list.html.twig', [
-            'reports' => $reports,
-            'reports2'=>$reports2
+        return $this->render('BlogBundle:Reportings:list.html.twig', [
+            'reports_article' => $reportsArticle,
+            'reports_comment' =>$reportsComment
         ]);
     }
 
@@ -45,7 +45,7 @@ class ReportingArticleController extends Controller
         $reportRepository2 = $this->getDoctrine()->getRepository('BlogBundle:ReportingComment');
         $reports2 = $reportRepository2->findAll();
 
-        return $this->render('BlogBundle:ReportingArticles:list.html.twig', [
+        return $this->render('BlogBundle:Reportings:list.html.twig', [
             'reports' => $reports,
             'reports2' => $reports2,
         ]);
@@ -98,7 +98,7 @@ class ReportingArticleController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('admin_reporting_article_list'));
+        return $this->redirect($this->generateUrl('admin_reportings_list'));
     }
 
     public function deleteArticleByReport($id)
@@ -113,7 +113,7 @@ class ReportingArticleController extends Controller
            $em->delete($article);
            $em-flush();
         }
-        return $this->redirect($this->generateUrl('admin_reporting_article_list'));
+        return $this->redirect($this->generateUrl('admin_reportings_list'));
     }
     //    public function testAction()
 //    {

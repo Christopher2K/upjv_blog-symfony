@@ -1,0 +1,51 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Blog - Liste des signalements{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <h1>Signalements</h1>
+            <p>La liste des signalements du blog !</p>
+        </div>
+        <div class="row">
+            <h4> Signalements des articles </h4>
+            <ul>
+                {% for report in reports_article %}
+                    <ul class="col-md-12 col-xs-12">
+                        <li>
+                            <a href="{{ path('article_show', { 'id': report.article.id}) }}">
+                                {{ report.article.title }}
+                            </a>
+                            signalé par <b>{{ report.user }}</b>
+                            <a href="{{ path('admin_reporting_article_delete', { 'id': report.id}) }}"
+                               title="Supprimer le signalement">
+                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            </a>
+                            - <a href="{{ path('article_delete', { 'id': report.article.id}) }}">Supprimer l'article</a>
+                            - <a href="">Supprimer l'auteur de l'article</a>
+                            - <a href="">Supprimer l'auteur du signalement</a></li>
+                    </ul>
+                {% endfor %}
+            </ul>
+            <br><br>
+            <h4> Signalements des commentaires </h4>
+            <ul>
+                {% for report in reports_comment %}
+                    <ul class="col-md-12 col-xs-12">
+                        <li>
+                            <i>&laquo;{{ report.comment.content }}&raquo;</i>
+                            (<a href="{{ path('article_show', { 'id': report.comment.article.id}) }}"> {{ report.comment.article.title }} </a>)
+                            signalé par <b>{{ report.user }}</b>
+
+                            <a href="{{ path('admin_reporting_article_delete', { 'id': report.id }) }}"
+                               title="Supprimer le signalement">
+                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            </a>
+                        </li>
+                    </ul>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
