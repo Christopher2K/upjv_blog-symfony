@@ -53,4 +53,4 @@ security:
         - { path: ^/comments/delete, role: [ROLE_REVIEWER, ROLE_ADMIN] }
         - { path: ^/comments/report/add, role: [ROLE_READER, ROLE_WRITER] }
 
-        - { path: ^/reports/$, role: [ROLE_READER, ROLE_WRITER] }xs
+        - { path: ^/reports/$, role: [ROLE_READER, ROLE_WRITER] }
