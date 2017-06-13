@@ -13,7 +13,39 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
     public function findByAuthorOrTitle($param)
     {
         $query = $this->getEntityManager()
-            ->createQuery("SELECT a FROM BlogBundle:Article a, BlogBundle:User u WHERE a.title LIKE '%" . $param . "%' OR u.username LIKE '%" . $param . "%'");
+            ->createQuery(
+                "SELECT a FROM BlogBundle:Article a, BlogBundle:User u 
+                      WHERE a.title LIKE '%" . $param . "%' 
+                      OR u.username LIKE '%" . $param . "%'"
+                );
+
+        return $query->getResult();
+    }
+
+    public function findByThemes($themes, $last30Days = false) {
+        if (sizeof($themes) == 0) {
+           return [];
+        }
+
+        $themeListSQL = join(",", array_map(function ($theme) {
+            return $theme->getId();
+        }, $themes));
+
+        if ($last30Days) {
+            $date = date('Y-m-d h:i:s', strtotime("-30 days"));
+
+            $query = $this->getEntityManager()
+                ->createQuery(
+                    "SELECT a 
+                          FROM BlogBundle:Article a 
+                          JOIN a.themes t 
+                          WHERE t.id IN (".$themeListSQL.") 
+                          AND a.createdAt BETWEEN '".$date."' AND '".date('Y-m-d h:i:s')."'"
+                );
+        } else {
+            $query = $this->getEntityManager()
+                ->createQuery("SELECT a FROM BlogBundle:Article a JOIN a.themes t WHERE t.id IN (".$themeListSQL.")");
+        }
 
         return $query->getResult();
     }

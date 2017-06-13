@@ -26,7 +26,7 @@ security:
             anonymous: ~
 
         blog:
-            pattern: ^/(logout|login_check|articles|themes|admin|)?
+            pattern: ^/(logout|login_check|articles|themes|admin|comments|reports)?
             provider: blog_users
             form_login:
                 login_path: /login
@@ -38,8 +38,19 @@ security:
 
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/articles/delete, roles: [ROLE_ADMIN, ROLE_WRITER] }
-        - { path: ^/articles/(add|edit), roles: ROLE_WRITER }
-        - { path: ^/articles/, roles: [ROLE_READER, ROLE_WRITER, ROLE_ADMIN] }
-        - { path: ^/themes/read, roles: ROLE_READER }
-        - { path: ^/themes/review, roles: ROLE_REVIEWER }
+
+        - { path: ^/articles$, role: [ROLE_WRITER, ROLE_READER] }
+        - { path: ^/articles/(add|edit), role: ROLE_WRITER }
+        - { path: ^/articles/delete, role: [ROLE_WRITER, ROLE_ADMIN] }
+        - { path: ^/articles/(read|unread), role: [ROLE_READER] }
+        - { path: ^/articles/reports/add, role: [ROLE_READER] }
+
+        - { path: ^/themes/read, role: [ROLE_READER] }
+        - { path: ^/themes/review, role: [ROLE_REVIEWER] }
+
+        - { path: ^/comments/$, role: [ROLE_REVIEWER] }
+        - { path: ^/comments/(add/edit), role: [ROLE_REVIEWER] }
+        - { path: ^/comments/delete, role: [ROLE_REVIEWER, ROLE_ADMIN] }
+        - { path: ^/comments/report/add, role: [ROLE_READER, ROLE_WRITER] }
+
+        - { path: ^/reports/$, role: [ROLE_READER, ROLE_WRITER] }xs

@@ -121,11 +121,6 @@ theme_delete_review:
         themeId: '\d+'
     defaults: { _controller: BlogBundle:Themes:deleteReview }
 
-## KESAKO
-article_list_by_author:
-  path: /articles/perso/
-  defaults: { _controller: BlogBundle:Articles:listByAuthor }
-
 # ####################### #
 # ADMINISTRATOR RELATIVES #
 # ####################### #
@@ -189,7 +184,7 @@ reporting_comment_delete:
     defaults: { _controller: BlogBundle:Reportings:deleteReportComment }
 
 reporting_article_delete:
-    path: /reports/comments/article/{id}
+    path: /reports/article/delete/{id}
     requirements:
         id: '\d+'
     defaults: { _controller: BlogBundle:Reportings:deleteReportArticle }

@@ -50,7 +50,7 @@
                 {% include 'flashes/error-flash.html.twig' %}
             </div>
 
-            {% if is_granted('ROLE_REVIEWER') and article.author != app.user %}
+            {% if is_granted('ROLE_REVIEWER') and article.author != app.user and isReviewer %}
                 <h3 class="col-xs-12">Poster un commentaire</h3>
                 {{ form_start(form_comment, {'attr': {'class': 'col-xs-12'}}) }}
 
@@ -90,7 +90,7 @@
 
             <div class="comments col-xs-12">
                 {% for comment in comments %}
-                    {% if (app.user == comment.author) or ('ROLE_READER' in app.user.roles) or (app.user == article.author) %}
+                    {% if (app.user == comment.author) or ('ROLE_READER' in app.user.roles) or (app.user == article.author) or not isReviewer %}
                         <div class="comment-show panel panel-default" data-comment_id="{{ comment.id }}">
                             <div class="show-header panel-heading">
                                 <p class="_wrapper">

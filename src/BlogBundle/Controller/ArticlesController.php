@@ -3,6 +3,7 @@
 namespace BlogBundle\Controller;
 
 use BlogBundle\Entity\Comment;
+use BlogBundle\Entity\UserTheme;
 use BlogBundle\Form\CommentType;
 use BlogBundle\Entity\Article;
 use BlogBundle\Entity\ReportingArticle;
@@ -18,14 +19,55 @@ class ArticlesController extends Controller
      * GET & DISPLAY ALL ARTICLES
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAction()
+    public function listAction(Request $request)
     {
         $articleRepository = $this->getDoctrine()->getRepository('BlogBundle:Article');
-        $articles = $articleRepository->findAll();
 
-        return $this->render('BlogBundle:Articles:list.html.twig', [
-            'articles' => $articles
-        ]);
+        if ($this->isGranted('ROLE_READER')) {
+            $userThemeRepository = $this->getDoctrine()->getRepository('BlogBundle:UserTheme');
+            $userThemes = $userThemeRepository->findByUser($this->getUser());
+
+            $themes = array_map(function (UserTheme $ut) {
+                return $ut->getTheme();
+            }, $userThemes);
+
+            if ($this->isGranted('ROLE_REVIEWER')) {
+                $articles = $articleRepository->findByThemes($themes, true);
+            } else {
+                $articles = $articleRepository->findByThemes($themes);
+            }
+
+            return $this->render('BlogBundle:Articles:list.html.twig', [
+                'articles' => $articles
+            ]);
+        }
+
+        if ($this->isGranted('ROLE_WRITER')) {
+            $articles = $articleRepository->findByAuthor($this->getUser());
+
+            $average = 0;
+            $length = 0;
+
+            foreach ($articles as $article) {
+                foreach ($article->getComments() as $comment) {
+                    $average += $comment->getNote();
+                }
+                $length += sizeof($article->getComments());
+            }
+
+            if ($length > 0) {
+                $average = $average / $length;
+            } else {
+                $average = -1;
+            }
+
+
+            return $this->render('BlogBundle:Articles:list_author.html.twig', [
+                'articles' => $articles,
+                'average' => $average
+            ]);
+        }
+
     }
 
     /**
@@ -40,17 +82,36 @@ class ArticlesController extends Controller
         $articleRepository = $this->getDoctrine()->getRepository('BlogBundle:Article');
         $commentRepository = $this->getDoctrine()->getRepository('BlogBundle:Comment');
 
+        $userThemeRepository = $this->getDoctrine()->getRepository('BlogBundle:UserTheme');
+        $userThemes = $userThemeRepository->findByUser($this->getUser());
+        $userThemes = array_filter($userThemes, function(UserTheme $ut) {
+           return $ut->getIsReviewer();
+        });
+
         $article = $articleRepository->find($id);
         $comments = $commentRepository->findAllByArticleWithOrder($article);
-        $moyenne = 0;
+        $isReviewer = false;
+
+        foreach ($article->getThemes() as $articleTheme) {
+            foreach ($userThemes as $userTheme) {
+                if ($articleTheme == $userTheme) {
+                    $isReviewer = true;
+                }
+            }
+        }
+
+
+
+        $average = 0;
         if (sizeof($comments) > 0) {
             foreach ($comments as $comment) {
-                $moyenne += $comment->getNote();
+                $average += $comment->getNote();
             }
-            $moyenne = $moyenne / sizeof($comments);
-        }else{
-            $moyenne=-1;
+            $average = $average / sizeof($comments);
+        } else {
+            $average = -1;
         }
+
         // Form comment
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
@@ -82,7 +143,8 @@ class ArticlesController extends Controller
             'article' => $article,
             'comments' => $comments,
             'form_comment' => $formComment->createView(),
-            'moyenne' => $moyenne,
+            'average' => $average,
+            'isReviewer' => $isReviewer,
             'forms_modify_comment' => $formsModifyComment
         ]);
     }
@@ -99,9 +161,9 @@ class ArticlesController extends Controller
             array('action' => $this->generateUrl('article_add')));
         $form->add('submit', SubmitType::class, array('label' => 'Ajouter'));
         $form->handleRequest($request);
-        if ($form->isValid()) {
+
+        if ($form->isValid() && $form->isSubmitted()) {
             $article->setAuthor($this->getUser());
-            $article->setCreatedAt(date("Y m d"));
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
             $entityManager->flush();
@@ -109,13 +171,6 @@ class ArticlesController extends Controller
             return $this->redirect($url);
         }
         return $this->render('BlogBundle:Articles:add.html.twig', array('article_form' => $form->createView()));
-    }
-
-    public function navigationAction()
-    {
-        $repository = $this->getDoctrine()->getManager()->getRepository('BlogBundle:Article');
-        $article = $repository->findAll();
-        return $this->render('BlogBundle:Articles:navigation.html.twig', array('articles' => $article));
     }
 
     /**
@@ -146,7 +201,7 @@ class ArticlesController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
         if (!$article = $entityManager->getRepository('BlogBundle:Article')->find($id))
             throw $this->createNotFoundException('L article[id=' . $id . '] inexistant');
-        $form = $this->createForm(ArticleType::class, $article, array('action' => $this->generateUrl('article_edit_suite',
+        $form = $this->createForm(ArticleType::class, $article, array('action' => $this->generateUrl('article_edit_next',
             array('id' => $article->getId()))));
         $form->add('submit', SubmitType::class, array('label' => 'Modifier'));
         $form->handleRequest($request);
@@ -202,7 +257,7 @@ class ArticlesController extends Controller
         $em->persist($reporting);
         $em->flush();
 
-        return $this->redirect($this->generateUrl('article_show',['id'=>$id]));
+        return $this->redirect($this->generateUrl('article_show', ['id' => $id]));
     }
 
     /**
@@ -235,39 +290,14 @@ class ArticlesController extends Controller
         return $this->redirect($url);
     }
 
+
     /**
+     * RETRIEVE THE GET PARAMETER FROM THE REQUEST AND FETCH ARTICLES
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listByAuthorAction()
+    public function searchAction(Request $request)
     {
-        $articleRepository = $this->getDoctrine()->getRepository('BlogBundle:Article');
-        $articles = $articleRepository->findByAuthor($this->get('security.token_storage')->getToken()->getUser());
-        $moyenne = 0;
-        $length = 0;
-        if (sizeof($articles) > 0) {
-            foreach ($articles as $article) {
-                foreach ($article->getComments() as $comment) {
-                    $moyenne += $comment->getNote();
-                }
-                $length += sizeof($article->getComments());
-            }
-            if ($length>0)
-            {
-                $moyenne = $moyenne / $length;
-            }else
-            {
-                $moyenne=-1;
-            }
-
-        }
-
-        return $this->render('BlogBundle:Articles:listByAuthor.html.twig', [
-            'articles' => $articles,
-            'moyenne' => $moyenne
-        ]);
-    }
-
-    public function searchAction(Request $request) {
         $searchParam = $request->query->get('s');
         $articleRepository = $this->getDoctrine()->getRepository('BlogBundle:Article');
         $articles = $articleRepository->findByAuthorOrTitle($searchParam);
