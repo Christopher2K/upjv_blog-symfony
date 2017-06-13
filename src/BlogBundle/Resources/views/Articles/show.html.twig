@@ -13,8 +13,8 @@
             {% for theme in article.themes %}
                 <span class="label label-default">{{ theme }} </span> &nbsp;
             {% endfor %}
-            {% if article.getAuthor == app.user and moyenne != -1 %}
-                Moyenne des notes {{ moyenne }}/10
+            {% if article.getAuthor == app.user and average != -1 %}
+                Moyenne des notes {{ average }}/10
             {% endif %}
             <br>Créé par <b>{{ article.getAuthor }} </b> le {{ article.createdAt|date("d/m/Y") }}
             à {{ article.createdAt|date("H:i") }}

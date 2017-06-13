@@ -22,7 +22,10 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ReportingsController extends Controller
 {
-
+    /**
+     * @param string $param
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function listAction($param="")
     {
         $reportArticleRepository = $this->getDoctrine()->getRepository('BlogBundle:ReportingArticle');

@@ -201,12 +201,14 @@ class ArticlesController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
         if (!$article = $entityManager->getRepository('BlogBundle:Article')->find($id))
             throw $this->createNotFoundException('L article[id=' . $id . '] inexistant');
+
+
         $form = $this->createForm(ArticleType::class, $article, array('action' => $this->generateUrl('article_edit_next',
             array('id' => $article->getId()))));
         $form->add('submit', SubmitType::class, array('label' => 'Modifier'));
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isValid() && $this->getUser() == $article->getAuthor()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
             $entityManager->flush();
